@@ -1,4 +1,212 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 03 Jan 2023 17:15:32 GMT</lastBuildDate><item><title><![CDATA[【LeetCode】695. Max Area of Island]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/max-area-of-island/description/ 題目描述  You are given an  binary matrix . An island is a group of 1's…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/【LeetCode】695. Max Area of Island/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/【LeetCode】695. Max Area of Island/</guid><pubDate>Wed, 04 Jan 2023 00:37:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 22 Jan 2023 16:13:57 GMT</lastBuildDate><item><title><![CDATA[淺談悲觀鎖與實戰]]></title><description><![CDATA[在大量請求下，在業務上容易發生併發情況，如果不好好保持資料原子性，那麼我們的資料最終結果並不可信，可以想像若在與金流相關系統上發生這種問題，這將是個災難。 其實說白了，就是要避免競爭條件(Race condition)。 悲觀鎖 悲觀鎖(Pessimistic Locking…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/淺談悲觀鎖與實戰/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/淺談悲觀鎖與實戰/</guid><pubDate>Sun, 22 Jan 2023 23:47:00 GMT</pubDate><content:encoded>&lt;p&gt;在大量請求下，在業務上容易發生併發情況，如果不好好保持資料原子性，那麼我們的資料最終結果並不可信，可以想像若在與金流相關系統上發生這種問題，這將是個災難。&lt;/p&gt;
+&lt;p&gt;其實說白了，就是要避免&lt;strong&gt;競爭條件(Race condition)&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2&gt;悲觀鎖&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;悲觀鎖(Pessimistic Locking)&lt;/strong&gt;，悲觀點在於認為資料並不安全，資料更新需求非常高，因此我們要在每次拿數據時都上鎖，在這期間其他請求將會 &lt;strong&gt;Block&lt;/strong&gt; 直至放鎖，等待下一個請求進行上鎖。從上述的描述，其實我們不難發現 Java 中的 &lt;strong&gt;Synchronized&lt;/strong&gt; 就屬於悲觀鎖的實現，甚至資料庫許多鎖表機制也是屬於悲觀鎖。&lt;/p&gt;
+&lt;h2&gt;實戰&lt;/h2&gt;
+&lt;p&gt;在傳統 RDB 上，我們可使用 SELECT ... FOR UPDATE 來針對 ROW 進行上鎖，直到後續 Commit 後才進行放鎖動作。&lt;/p&gt;
+&lt;p&gt;假設現在我們有一個庫存資料表，表格內容如下。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Column&lt;/th&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Primary Key&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;product_id&lt;/td&gt;
+&lt;td&gt;INT&lt;/td&gt;
+&lt;td&gt;YES&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;amount&lt;/td&gt;
+&lt;td&gt;INT&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;version&lt;/td&gt;
+&lt;td&gt;INT&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;Spring Data JPA&lt;/h3&gt;
+&lt;p&gt;在 Spring Data JPA 中我們可以更加優雅的使用 &lt;strong&gt;@Lock&lt;/strong&gt; 來幫助我們進行悲觀鎖的實現。&lt;/p&gt;
+&lt;h4&gt;Entity&lt;/h4&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token annotation punctuation&quot;&gt;@Entity&lt;/span&gt;
+&lt;span class=&quot;token annotation punctuation&quot;&gt;@Table&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;name &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;stock&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Stock&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+	&lt;span class=&quot;token annotation punctuation&quot;&gt;@Id&lt;/span&gt;
+	&lt;span class=&quot;token annotation punctuation&quot;&gt;@Column&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;name &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;product_id&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;token keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; productId&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+	&lt;span class=&quot;token annotation punctuation&quot;&gt;@Column&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;name &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;amount&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;token keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; amount&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+	
+	&lt;span class=&quot;token annotation punctuation&quot;&gt;@Column&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;name &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;version&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;token keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; version&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+	&lt;span class=&quot;token comment&quot;&gt;// getters and setters&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4&gt;Repository&lt;/h4&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token annotation punctuation&quot;&gt;@Repository&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;StockRepository&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;JpaRepository&lt;/span&gt;&lt;span class=&quot;token generics&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;Stock&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;token annotation punctuation&quot;&gt;@Lock&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;value &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;LockModeType&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;PESSIMISTIC_WRITE&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;token annotation punctuation&quot;&gt;@Query&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;SELECT s FROM Stock s WHERE s.productId = :productId&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;token class-name&quot;&gt;Optional&lt;/span&gt;&lt;span class=&quot;token generics&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;Stock&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;findByProductId&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; productId&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+	
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4&gt;Service&lt;/h4&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token annotation punctuation&quot;&gt;@Service&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;StockServiceImpl&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;StockService&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+	&lt;span class=&quot;token keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;StockRepository&lt;/span&gt; stockRepository&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+	
+	&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;StockServiceImpl&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;StockRepository&lt;/span&gt; stockRepository&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;stockRepository &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; stockRepository&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+	
+	&lt;span class=&quot;token annotation punctuation&quot;&gt;@Transactional&lt;/span&gt;
+	&lt;span class=&quot;token annotation punctuation&quot;&gt;@Override&lt;/span&gt;
+	&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;StockDto&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;checkStock&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; productId&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; amount&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;token class-name&quot;&gt;Optional&lt;/span&gt;&lt;span class=&quot;token generics&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;Stock&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt; optional &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; stockRepository&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;findByProductId&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;productId&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+		
+		&lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;optional&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;isPresent&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;token keyword&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;RuntimeException&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;product id not found, id: &quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; productId&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+		
+		&lt;span class=&quot;token class-name&quot;&gt;Stock&lt;/span&gt; stock &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; optional&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        
+		&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; existAmount &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; stock&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getAmount&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; existVersion &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; stock&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getVersion&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        
+		&lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;existAmount &lt;span class=&quot;token operator&quot;&gt;&gt;=&lt;/span&gt; amount&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+			stock&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;setAmount&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;existAmount &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt; amount&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+		stock&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;setVersion&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;existVersion &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+		stockRepository&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;stock&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;convertToDto&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;stock&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+	
+	&lt;span class=&quot;token keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;StockDto&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;convertToDto&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;Stock&lt;/span&gt; stock&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;token class-name&quot;&gt;StockDto&lt;/span&gt; stockDto &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;StockDto&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+		stockDto&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;setProductId&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;stock&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getProductId&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+		stockDto&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;setAmount&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;stock&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getAmount&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; stockDto&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+	
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;模擬測試&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;庫存數量為 100&lt;/li&gt;
+&lt;li&gt;QPS 平均為 100/sec&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;Test case 1&lt;/h3&gt;
+&lt;p&gt;如上述條件為基礎下，我們將在 &lt;strong&gt;stockRepository.save&lt;/strong&gt; 之前將 &lt;strong&gt;Thread.sleep(3 * 1000L)&lt;/strong&gt;。在這個測試情結下，我們可以測試在併發時，是否有真的進行上鎖動作。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 630px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/13fef5cc55fae65ba4d5da050722dcfb/a8417/rhgZp9K.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 43.0379746835443%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA0UlEQVR42q3RXU7EIBSGYVbjCtQKUzj8lrbQTtvRjMZM3P8qPlMmMc7ERKtevIFw8QQOzIQGZD2UsfCxQ79fEPsBocuYjifEPEFIwk7pi2oypetzNj4t6NIIoQih7TE/nzAcjmjzgJhGmBChXYD24bx+Exse5wKuuvUNjPOlda+0hdQGsqw/i6VlQuwyatIg4758xpaYbBLuVYubW8JdbSALaD5mtDX2WnGkSoB/Qq6Hvgl8qzjmimNH59v9BrkAX7jA/kH8I+gcMtmCrL/6V/Ad3gE7f/HNKvMAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;rhgZp9K&quot;
+        title=&quot;rhgZp9K&quot;
+        src=&quot;/static/13fef5cc55fae65ba4d5da050722dcfb/f058b/rhgZp9K.png&quot;
+        srcset=&quot;/static/13fef5cc55fae65ba4d5da050722dcfb/c26ae/rhgZp9K.png 158w,
+/static/13fef5cc55fae65ba4d5da050722dcfb/6bdcf/rhgZp9K.png 315w,
+/static/13fef5cc55fae65ba4d5da050722dcfb/f058b/rhgZp9K.png 630w,
+/static/13fef5cc55fae65ba4d5da050722dcfb/a8417/rhgZp9K.png 941w&quot;
+        sizes=&quot;(max-width: 630px) 100vw, 630px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;可以看到在前面幾個的 Request 都已經完成，但後續的 Request 很大概率會因為 Connection Timeout 機制導致出錯，這也根本上的代表我們確實將該筆資料進行上鎖了。&lt;/p&gt;
+&lt;h3&gt;Test case 2&lt;/h3&gt;
+&lt;p&gt;一樣在上述的基礎下，我們這次將移除 &lt;strong&gt;Thread.sleep(3 * 1000L)&lt;/strong&gt; 並且觀察庫存是否有超賣問題。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 630px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/fefd39532f3d823bc065f734472adf46/d5c6f/32Ulhz9.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 32.278481012658226%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAGCAYAAADDl76dAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAhUlEQVR42p2PSw7DIAwFuVcrMLYhKRAF1Puf5VWAKvWzaJPFSG/j0dhwXOA1glgRbhlr2bGkDbneQRphWXB1/m8M5YDSKiwxYipD1MWyFjhWOBY40d+wgjRMYa47nJdxbD2PfbF0qOytcGsNluZrXTR43QcwlGZhf/lM0Veh/yh8Vp4VPgDyXtLdfGcX2QAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;32Ulhz9&quot;
+        title=&quot;32Ulhz9&quot;
+        src=&quot;/static/fefd39532f3d823bc065f734472adf46/f058b/32Ulhz9.png&quot;
+        srcset=&quot;/static/fefd39532f3d823bc065f734472adf46/c26ae/32Ulhz9.png 158w,
+/static/fefd39532f3d823bc065f734472adf46/6bdcf/32Ulhz9.png 315w,
+/static/fefd39532f3d823bc065f734472adf46/f058b/32Ulhz9.png 630w,
+/static/fefd39532f3d823bc065f734472adf46/40601/32Ulhz9.png 945w,
+/static/fefd39532f3d823bc065f734472adf46/78612/32Ulhz9.png 1260w,
+/static/fefd39532f3d823bc065f734472adf46/d5c6f/32Ulhz9.png 1261w&quot;
+        sizes=&quot;(max-width: 630px) 100vw, 630px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;這次可以看到我們請求都正常了，該檢視一下庫存是否超賣了。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 255px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/93af15d7705a84a8371612b905611396/b8c8f/LOt0mQQ.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 27.848101265822784%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAGCAYAAADDl76dAAAACXBIWXMAAAsTAAALEwEAmpwYAAABHElEQVR42nWQ2WrCUBRF/f8P6U/0sVAIpSFSKY0ZzGRu5uma1Oi9rmK04EO7YcOBzVlnWMVRTF1VtG1DWZZkImPoe/IsxTRN1taaLM+Jgh2GYZDlJVddLhf+0mptWWy3Po6f4LouruvRdT11VfBumhjGG/t9SuB7mKZFXlRLo9aaeZ6Z5xP6Dr8OWS1Vt4HdE3U7kcQRQRhR1w1V1SzxMEPSTsihJ4pikjghTTPOSqOVIhOCYBcQx+kNeOk9VPJMEAm2to3r+kRhiBDpAmyP4IiOPBPYX/ZyRVEWy3bz8YjrOHxuPvB85w7kbwXh/2kSK5qmYZq+gTMiVby+6BtQa7VYqUdrBqmWXz36N5PyhJSScRwZxwNNI0n3B34ATSTHo4m9xhYAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;LOt0mQQ&quot;
+        title=&quot;LOt0mQQ&quot;
+        src=&quot;/static/93af15d7705a84a8371612b905611396/b8c8f/LOt0mQQ.png&quot;
+        srcset=&quot;/static/93af15d7705a84a8371612b905611396/c26ae/LOt0mQQ.png 158w,
+/static/93af15d7705a84a8371612b905611396/b8c8f/LOt0mQQ.png 255w&quot;
+        sizes=&quot;(max-width: 255px) 100vw, 255px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;在上圖中我們可以發現，&lt;strong&gt;version&lt;/strong&gt; 為 &lt;strong&gt;200&lt;/strong&gt;，證明了我們確實都完成了請求，然而在 QPS 平均為 100 的情況下，我們也 &lt;strong&gt;amount&lt;/strong&gt; 也沒有發生超賣情形。&lt;/p&gt;
+&lt;h2&gt;結論&lt;/h2&gt;
+&lt;p&gt;在實現悲觀鎖的過程中，我們不難發現，在這種誰先取得 Lock 誰先動作的過程，其實也是確保了執行的順序。&lt;/p&gt;
+&lt;p&gt;大家不妨使用 Java Synchronized 來進行 Multi-thread 程式撰寫，其實也是相同道理，都是要處理競爭條件的。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[【LeetCode】695. Max Area of Island]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/max-area-of-island/description/ 題目描述  You are given an  binary matrix . An island is a group of 1's…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/【LeetCode】695. Max Area of Island/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/【LeetCode】695. Max Area of Island/</guid><pubDate>Wed, 04 Jan 2023 00:37:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;https://leetcode.com/problems/max-area-of-island/description/&quot;&gt;https://leetcode.com/problems/max-area-of-island/description/&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;題目描述&lt;/h2&gt;
 &lt;p&gt;&lt;span
