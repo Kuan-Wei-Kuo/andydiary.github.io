@@ -43,3 +43,8 @@ public static void main(String[] args) {
 4. 從 main() 函式調用 Product(int, String)， Heap 將儲存 Stack 中的 id 與 name，最終創立 Prodcut 類別並由 Stack 儲存其參照位置。 
 
 ![Stack_Heap_Example.drawio](./Stack_Heap_Example.drawio.png)
+
+## 參考
+https://www.javatpoint.com/stack-vs-heap-java
+https://www.baeldung.com/java-stack-heap
+https://stackify.com/java-heap-vs-stack/
