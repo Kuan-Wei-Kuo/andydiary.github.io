@@ -1,4 +1,69 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 03 Feb 2023 16:00:17 GMT</lastBuildDate><item><title><![CDATA[【LeetCode】 1115.  Print FooBar Alternately]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/print-foobar-alternately/ 題目描述 Suppose you are given the following code: 假設你有以下程式碼 The same instance of…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/【LeetCode】 1115.  Print FooBar Alternately/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/【LeetCode】 1115.  Print FooBar Alternately/</guid><pubDate>Fri, 03 Feb 2023 23:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 10 Feb 2023 15:23:01 GMT</lastBuildDate><item><title><![CDATA[【Java】談談 JVM 的 Stack 與 Heap]]></title><description><![CDATA[在 JAVA 中管理記憶管理分為兩部分，分別為 Stack 與 Heap，各自有著不同的負責項目，也需要相互合作，接下來就讓我們探討兩者之前的差別。 Stack Memory 在 JVM 中 Stack 儲存順序為後進先出(LIFO)，每個 thraed…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/【Java】談談 Stack 與 Heap 的生活/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/【Java】談談 Stack 與 Heap 的生活/</guid><pubDate>Fri, 10 Feb 2023 23:16:00 GMT</pubDate><content:encoded>&lt;p&gt;在 JAVA 中管理記憶管理分為兩部分，分別為 Stack 與 Heap，各自有著不同的負責項目，也需要相互合作，接下來就讓我們探討兩者之前的差別。&lt;/p&gt;
+&lt;h2&gt;Stack Memory&lt;/h2&gt;
+&lt;p&gt;在 JVM 中 Stack 儲存順序為後進先出(LIFO)，每個 thraed 都維護著自有的 Stack 區塊，其負責儲存變數、物件參照、函式等等。&lt;/p&gt;
+&lt;p&gt;現在我們來說說函式，每當我們調用一個函式時，都將在 Stack 中建立一個區塊，此區塊負責儲存上述所說明的項目，然而分配的記憶體會一直存在，直到函式完成執行。倘若函式一直無法返回結果，記憶體用量無限增生，此時就會發出 StackOverFlowError，這也是在撰寫遞迴時常看見的錯誤訊息。&lt;/p&gt;
+&lt;h2&gt;Heap Memory&lt;/h2&gt;
+&lt;p&gt;說到 Heap 就不得不說 OutOfMemoryError，這也是我們常常遇到的錯誤訊息，也因為 Heap 主要負責儲存物件以及 JRE 相關類別，因此設計大量資料運算時，常常我們需要考慮記憶體用量，並且使用批次進行計算，盡量讓物件達成 GC 回收的前置作業，以免發生 OOM 錯誤。&lt;/p&gt;
+&lt;p&gt;而開頭說明 Stack 與 Heap 會互相合作，其實就是由 Stack 負責儲存物件參照位置，Heap 負責使用參照位置進行儲存物件資料，由 JVM 自行管理其運作關係。&lt;/p&gt;
+&lt;h2&gt;範例&lt;/h2&gt;
+&lt;p&gt;接下來我們簡單的設計一個範例，基本上就是從 main 方法中進行 Product 物件的建立。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Product&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; id&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token class-name&quot;&gt;String&lt;/span&gt; name&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Product&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; id&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;String&lt;/span&gt; name&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;id &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; id&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;name &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; name&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; args&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; id &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;69&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token class-name&quot;&gt;String&lt;/span&gt; name &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;Milk&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;token class-name&quot;&gt;Product&lt;/span&gt; product &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Product&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;id&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; namn&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;讓我們一步步地分析:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;main() 函式被調用，將在 Stack 分配區塊進行儲存該方法與相關變數。&lt;/li&gt;
+&lt;li&gt;Stack 直接儲入整數 id 的原始值。&lt;/li&gt;
+&lt;li&gt;Heap 分配 String pool 區塊，將字串 name 進行儲存，並且 Stack 儲存其參照位置。&lt;/li&gt;
+&lt;li&gt;從 main() 函式調用 Product(int, String)， Heap 將儲存 Stack 中的 id 與 name，最終創立 Prodcut 類別並由 Stack 儲存其參照位置。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 473px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/9fafbfca135aa3a7bddae939033980dd/c7c3c/Stack_Heap_Example.drawio.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 89.87341772151898%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAASCAYAAABb0P4QAAAACXBIWXMAAAsTAAALEwEAmpwYAAACu0lEQVR42oWUaW/aQBCG+f8/o1I+VFXVhBTCGcJlbkPNFYWjEC4VbK/tPUwS0FvtcqdRutIrj2dmH+/sjjeAD8bLywu22y0+G6+vr0rvR2Cz2ajA29ubkrSn0yk8z8N57ACQkh8jhGC5XGKz3R79Mj/AGFNB13XhOI56Stjh/eCzLEuJUQrXIVgs5pjPZiC2DcaoYkhWgHOuDCEEpP2RZExCKaVYWgSPw2fozS5qRgfd/hiLpXXMVUCZeAB/JBkjxIFgDN3hFMGMjkS5g0Slg9tsHUXjCb7gpxVKIPsPUJZOqYdKq4dosYlgqoTr+wIiBQOVdv9foCxLCH4mceGTJdu2jZzewZ1mIJyt4y7bQCjXQKX1DuhRCst2YNoOVjaBSRysLKIkfdTbHdzKNNEbzxDVDMSrBu4qOmKFJmqdwR7IERCcw/U8xLQ6roJJfA2ncXWTwPdYHt+iOXy5jqM9GqrVmZa923wqMGcLDNgQPvVBGT2eww7ouqi1+8jqHeTrXSVZWqbWRrbWQXsywGQ1A/V2kwQX8LgLwomyzw92D/QU7Ec8j9tUETdJDZF8HXc5HTfJAjq9MebeDMQluxUyDsIIlmwFwQQYZycg3wOr7T4SWh2pUgPJgo50pYV0tYW4pmM8+wOXOpi6M6yFD58LUN8DWRP1frlCweG4LorNJ4QzFYTTZUSyVdyXW4jkdITSZfTHU3DKsGJLpMZlJLQWQpkSgqkColoD9ceh6oTdoeyBBeMJt6mSKjd4X0BMa6iSfz5I4Ez1oJQxGiCq/ULooYTQQ1nZF8DDciljqn1+j0boDwbo9Xqqmdn+l5K253oQzFd5z5MJRuOx2i7Zfxd7ePiXxb45T75Tkx8ujfOGP80Tx3kBSX5/2xzkOCefaZrqtjndQu7FHMmQrIC8x3zfx3q9/lQy57M8GZOsv8mzPyaPEYqrAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;Stack_Heap_Example.drawio&quot;
+        title=&quot;&quot;
+        src=&quot;/static/9fafbfca135aa3a7bddae939033980dd/c7c3c/Stack_Heap_Example.drawio.png&quot;
+        srcset=&quot;/static/9fafbfca135aa3a7bddae939033980dd/c26ae/Stack_Heap_Example.drawio.png 158w,
+/static/9fafbfca135aa3a7bddae939033980dd/6bdcf/Stack_Heap_Example.drawio.png 315w,
+/static/9fafbfca135aa3a7bddae939033980dd/c7c3c/Stack_Heap_Example.drawio.png 473w&quot;
+        sizes=&quot;(max-width: 473px) 100vw, 473px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h2&gt;參考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.javatpoint.com/stack-vs-heap-java&quot;&gt;https://www.javatpoint.com/stack-vs-heap-java&lt;/a&gt;&lt;br&gt;
+&lt;a href=&quot;https://www.baeldung.com/java-stack-heap&quot;&gt;https://www.baeldung.com/java-stack-heap&lt;/a&gt;&lt;br&gt;
+&lt;a href=&quot;https://stackify.com/java-heap-vs-stack/&quot;&gt;https://stackify.com/java-heap-vs-stack/&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[【LeetCode】 1115.  Print FooBar Alternately]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/print-foobar-alternately/ 題目描述 Suppose you are given the following code: 假設你有以下程式碼 The same instance of…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/【LeetCode】 1115.  Print FooBar Alternately/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/【LeetCode】 1115.  Print FooBar Alternately/</guid><pubDate>Fri, 03 Feb 2023 23:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;https://leetcode.com/problems/print-foobar-alternately/&quot;&gt;https://leetcode.com/problems/print-foobar-alternately/&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;題目描述&lt;/h2&gt;
 &lt;p&gt;Suppose you are given the following code:&lt;/p&gt;
@@ -224,7 +289,7 @@
   &lt;img
         class=&quot;gatsby-resp-image-image&quot;
         alt=&quot;wqN7YMA&quot;
-        title=&quot;wqN7YMA&quot;
+        title=&quot;&quot;
         src=&quot;/static/0a31f4d4cf4dee3b43f65c88033a606e/f058b/wqN7YMA.png&quot;
         srcset=&quot;/static/0a31f4d4cf4dee3b43f65c88033a606e/c26ae/wqN7YMA.png 158w,
 /static/0a31f4d4cf4dee3b43f65c88033a606e/6bdcf/wqN7YMA.png 315w,
@@ -262,7 +327,7 @@ statement executed: update stock set amount=?, version=? where product_id=? and 
   &lt;img
         class=&quot;gatsby-resp-image-image&quot;
         alt=&quot;iIdGAfG&quot;
-        title=&quot;iIdGAfG&quot;
+        title=&quot;&quot;
         src=&quot;/static/8198e067a7e75959b6bb414debc78f85/17741/iIdGAfG.png&quot;
         srcset=&quot;/static/8198e067a7e75959b6bb414debc78f85/c26ae/iIdGAfG.png 158w,
 /static/8198e067a7e75959b6bb414debc78f85/17741/iIdGAfG.png 263w&quot;
@@ -402,7 +467,7 @@ statement executed: update stock set amount=?, version=? where product_id=? and 
   &lt;img
         class=&quot;gatsby-resp-image-image&quot;
         alt=&quot;rhgZp9K&quot;
-        title=&quot;rhgZp9K&quot;
+        title=&quot;&quot;
         src=&quot;/static/13fef5cc55fae65ba4d5da050722dcfb/f058b/rhgZp9K.png&quot;
         srcset=&quot;/static/13fef5cc55fae65ba4d5da050722dcfb/c26ae/rhgZp9K.png 158w,
 /static/13fef5cc55fae65ba4d5da050722dcfb/6bdcf/rhgZp9K.png 315w,
@@ -436,7 +501,7 @@ statement executed: update stock set amount=?, version=? where product_id=? and 
   &lt;img
         class=&quot;gatsby-resp-image-image&quot;
         alt=&quot;32Ulhz9&quot;
-        title=&quot;32Ulhz9&quot;
+        title=&quot;&quot;
         src=&quot;/static/fefd39532f3d823bc065f734472adf46/f058b/32Ulhz9.png&quot;
         srcset=&quot;/static/fefd39532f3d823bc065f734472adf46/c26ae/32Ulhz9.png 158w,
 /static/fefd39532f3d823bc065f734472adf46/6bdcf/32Ulhz9.png 315w,
@@ -470,7 +535,7 @@ statement executed: update stock set amount=?, version=? where product_id=? and 
   &lt;img
         class=&quot;gatsby-resp-image-image&quot;
         alt=&quot;LOt0mQQ&quot;
-        title=&quot;LOt0mQQ&quot;
+        title=&quot;&quot;
         src=&quot;/static/93af15d7705a84a8371612b905611396/b8c8f/LOt0mQQ.png&quot;
         srcset=&quot;/static/93af15d7705a84a8371612b905611396/c26ae/LOt0mQQ.png 158w,
 /static/93af15d7705a84a8371612b905611396/b8c8f/LOt0mQQ.png 255w&quot;
@@ -505,7 +570,7 @@ statement executed: update stock set amount=?, version=? where product_id=? and 
   &lt;img
         class=&quot;gatsby-resp-image-image&quot;
         alt=&quot;maxarea1-grid&quot;
-        title=&quot;maxarea1-grid&quot;
+        title=&quot;&quot;
         src=&quot;/static/c462d022e77d90bc42de4f86e1ed4e9b/828fb/maxarea1-grid.jpg&quot;
         srcset=&quot;/static/c462d022e77d90bc42de4f86e1ed4e9b/ff44c/maxarea1-grid.jpg 158w,
 /static/c462d022e77d90bc42de4f86e1ed4e9b/a6688/maxarea1-grid.jpg 315w,
@@ -650,7 +715,7 @@ Return the maximum &lt;strong&gt;area&lt;/strong&gt; of an island in &lt;code cl
   &lt;img
         class=&quot;gatsby-resp-image-image&quot;
         alt=&quot;Quicksort&quot;
-        title=&quot;Quicksort&quot;
+        title=&quot;&quot;
         src=&quot;/static/eda7071cef370bc1cd0a5f3534ea0842/33b38/quicksort.png&quot;
         srcset=&quot;/static/eda7071cef370bc1cd0a5f3534ea0842/c26ae/quicksort.png 158w,
 /static/eda7071cef370bc1cd0a5f3534ea0842/6bdcf/quicksort.png 315w,
@@ -840,7 +905,7 @@ Three...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
   &lt;img
         class=&quot;gatsby-resp-image-image&quot;
         alt=&quot;Spring CSRF Token&quot;
-        title=&quot;Spring CSRF Token&quot;
+        title=&quot;&quot;
         src=&quot;/static/b267d812b6a6431aaa08b9079833502c/74cfa/spring_csrf.png&quot;
         srcset=&quot;/static/b267d812b6a6431aaa08b9079833502c/c26ae/spring_csrf.png 158w,
 /static/b267d812b6a6431aaa08b9079833502c/6bdcf/spring_csrf.png 315w,
