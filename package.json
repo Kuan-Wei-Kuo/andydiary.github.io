@@ -39,7 +39,7 @@
     "url": "git@github.com:Kuan-Wei-Kuo/andydiary.github.io.git"
   },
   "scripts": {
-    "deploy": "gatsby clean && gatsby build --prefix-paths && gh-pages -d public master",
+    "deploy": "gatsby clean && gatsby build --prefix-paths && gh-pages -d master",
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
