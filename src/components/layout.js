@@ -7,12 +7,13 @@ const Layout = ({ location, title, children }) => {
   return (
     <div className="global-wrapper" data-is-root-path={isRootPath}>
       <header className="global-header">
-        <Link className="main-heading" to="/">{title}</Link>
+        <Link className="heading-link" to="/">{title}</Link>
 
         <div className="global-header-spacing"></div>
 
         <div className="global-header-action">
           <Link className="heading-link" to="/">首頁</Link>
+          <Link className="heading-link" to="/tags">標籤</Link>
           <Link className="heading-link" to="/about">關於</Link>
         </div>
       </header>

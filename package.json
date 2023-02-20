@@ -23,7 +23,8 @@
     "gatsby-transformer-sharp": "^5.3.1",
     "prismjs": "^1.29.0",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react-dom": "^18.1.0",
+    "react-helmet": "^6.1.0"
   },
   "devDependencies": {
     "gh-pages": "^4.0.0",
@@ -39,7 +40,7 @@
     "url": "git@github.com:Kuan-Wei-Kuo/andydiary.github.io.git"
   },
   "scripts": {
-    "deploy": "gatsby clean && gatsby build --prefix-paths && gh-pages -d master",
+    "deploy": "gatsby clean && gatsby build --prefix-paths && gh-pages -d public master",
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",

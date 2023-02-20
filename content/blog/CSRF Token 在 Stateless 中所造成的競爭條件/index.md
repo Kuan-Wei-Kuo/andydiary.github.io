@@ -1,6 +1,7 @@
 ---
 title: CSRF Token 在 Stateless 中所造成的競爭條件
 date: "2022-11-13T20:49:00Z"
+tags: ['Spring', 'CSRF']
 ---
 
 往往我們在 Spring Security 中要進行無狀態的服務撰寫時，將會設置 SessionCreationPolicy.STATELESS 使 Spring Security 不會產生 Session，然而在 Spring CSRF 防範的機制中，這樣的設定將會造成每個請求都會 Rotated CSRF Token。

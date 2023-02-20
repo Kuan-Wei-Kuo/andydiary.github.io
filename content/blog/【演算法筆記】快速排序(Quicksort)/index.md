@@ -1,6 +1,7 @@
 ---
 title: 【演算法筆記】快速排序(Quicksort)
 date: "2022-12-17T21:48:00Z"
+tags: ['演算法']
 ---
 
 基本上 Quicksort 使用 Divide and conquer 策略，將一個 List 進行切割為兩個子序列，只要我們不斷地遞迴這兩個子序列，我們就能夠快速的排序。

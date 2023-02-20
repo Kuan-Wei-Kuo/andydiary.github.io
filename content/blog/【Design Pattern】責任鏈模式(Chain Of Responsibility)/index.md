@@ -1,6 +1,7 @@
 ---
 title: 【Design Pattern】責任鏈模式(Chain Of Responsibility)
 date: "2022-12-03T21:48:00Z"
+tags: ['Design Pattern']
 ---
 
 ## 責任鏈模式(Chain Of Responsibility)

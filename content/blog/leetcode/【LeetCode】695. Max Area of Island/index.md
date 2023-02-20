@@ -1,6 +1,7 @@
 ---
 title: 【LeetCode】695. Max Area of Island
 date: "2023-01-04T00:37:00Z"
+tags: ['LeetCode']
 ---
 
 ## 題目位置

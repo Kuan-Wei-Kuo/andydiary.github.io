@@ -1,6 +1,7 @@
 ---
 title: 【Java】談談 JVM 的 Stack 與 Heap
 date: "2023-02-10T23:16:00Z"
+tags: ['Java']
 ---
 
 在 JAVA 中管理記憶管理分為兩部分，分別為 Stack 與 Heap，各自有著不同的負責項目，也需要相互合作，接下來就讓我們探討兩者之前的差別。
