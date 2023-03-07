@@ -1,7 +1,7 @@
 ---
 title: 【ELK】要不來點 ELK
 date: "2023-02-26T23:00:00Z"
-tags: ['【ELK】要不來點']
+tags: ['ELK']
 ---
 
 ## 什麼是 ELK ?
