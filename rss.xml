@@ -1,4 +1,116 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 25 Feb 2023 17:28:45 GMT</lastBuildDate><item><title><![CDATA[【ELK】要不來點 ELK]]></title><description><![CDATA[什麼是 ELK ? ELK 是個縮寫，其描述由三個熱門專案所組成的堆疊，分別為 Elasticsearch、Logstash、Kibana，通常使用在彙總所有系統和服務的 Log 並且分析，也可建立系統監控架構，透過視覺化的呈現，讓我們可以快速了解系統狀況。 為何需要使用 ELK…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/elk/【ELK】要不來點 ELK/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/elk/【ELK】要不來點 ELK/</guid><pubDate>Sun, 26 Feb 2023 23:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;什麼是 ELK ?&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 07 Mar 2023 16:11:39 GMT</lastBuildDate><item><title><![CDATA[【ELK】要不來點 ELK - Filebeat]]></title><description><![CDATA[什麼是 Filebeat ? 如果我們去 Filebeat 介紹頁面，會看看斗大的 Lightweight shipper for logs 字眼，意思就是說 Filebeat…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/elk/【ELK】要不要來點 ELK - Filebeat/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/elk/【ELK】要不要來點 ELK - Filebeat/</guid><pubDate>Tue, 07 Mar 2023 23:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;什麼是 Filebeat ?&lt;/h2&gt;
+&lt;p&gt;如果我們去 Filebeat 介紹頁面，會看看斗大的 Lightweight shipper for logs 字眼，意思就是說 Filebeat 是一個輕量日誌採集器，其主要工作就是幫助我們進行日誌收集，下面讓我們看看有那些特色。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;輕量日誌採集器，設定方式簡潔。&lt;/li&gt;
+&lt;li&gt;提供許多模組可快速接收與解析日誌，如 Traefik、Nginx、MySQL 等。&lt;/li&gt;
+&lt;li&gt;Filebeat 有自己的 Registry 文件，不會因為系統重啟而重複發送日誌。&lt;/li&gt;
+&lt;li&gt;若連接一方為 Logstash 或者 Elasticsearch 時，會自動檢視對方是否過載，若過載將降低傳輸速度，直到系統恢復正常。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我們簡單的介紹過 Filebeat 之後，接下來讓我們利用 Docker 來體驗一下它的魔力。&lt;/p&gt;
+&lt;h2&gt;Say hello to Traefik&lt;/h2&gt;
+&lt;p&gt;Traefik 與 Nginx 一樣，都是一套反向代理工具，今天我們就不多做介紹(其實我有點懶)，直接開玩。&lt;/p&gt;
+&lt;h3&gt;Step 1. Edit traefik.yml&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;yaml&quot;&gt;&lt;pre class=&quot;language-yaml&quot;&gt;&lt;code class=&quot;language-yaml&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;## traefik.yml&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;# Docker configuration backend&lt;/span&gt;
+&lt;span class=&quot;token key atrule&quot;&gt;providers&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;docker&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token key atrule&quot;&gt;defaultRule&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;Host(`{{ trimPrefix `/` .Name }}.docker.localhost`)&quot;&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;# API and dashboard configuration&lt;/span&gt;
+&lt;span class=&quot;token key atrule&quot;&gt;api&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;insecure&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token boolean important&quot;&gt;true&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;# Enable access log&lt;/span&gt;
+&lt;span class=&quot;token key atrule&quot;&gt;accessLog&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;/etc/traefik/logs/access.log&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Step 2. Run traefik&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;docker&lt;/span&gt; run &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;8080&lt;/span&gt;:8080 &lt;span class=&quot;token parameter variable&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;80&lt;/span&gt;:80 &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;token parameter variable&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;token environment constant&quot;&gt;$PWD&lt;/span&gt;/traefik.yml:/etc/traefik/traefik.yml &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;token parameter variable&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;token environment constant&quot;&gt;$PWD&lt;/span&gt;/logs:/etc/traefik/logs &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;token parameter variable&quot;&gt;-v&lt;/span&gt; /var/run/docker.sock:/var/run/docker.sock &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+traefik:v2.5&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;沒意外大家現在已經可以訪問 &lt;a href=&quot;http://localhost:8080&quot;&gt;http://localhost:8080&lt;/a&gt; 了，接下來讓我們嘗試使用 Filebeat 進行資料存取測試。&lt;/p&gt;
+&lt;h2&gt;Hi, Filebeat&lt;/h2&gt;
+&lt;p&gt;接下來我們來看看 Filebeat 基礎服務如何實現。&lt;/p&gt;
+&lt;h3&gt;Step 1. Edit filebeat.yml&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;yaml&quot;&gt;&lt;pre class=&quot;language-yaml&quot;&gt;&lt;code class=&quot;language-yaml&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;## filebeat.yml&lt;/span&gt;
+&lt;span class=&quot;token key atrule&quot;&gt;filebeat.inputs&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; log
+    &lt;span class=&quot;token key atrule&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token boolean important&quot;&gt;true&lt;/span&gt;
+    &lt;span class=&quot;token key atrule&quot;&gt;paths&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;/home/andy/elk-demo/traefik/logs/access.log*&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;token key atrule&quot;&gt;processors&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;add_id&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token null important&quot;&gt;~&lt;/span&gt;
+
+&lt;span class=&quot;token key atrule&quot;&gt;output.file&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token boolean important&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;codec.json&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token key atrule&quot;&gt;pretty&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token boolean important&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;/tmp/filebeat/&quot;&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; filebeat
+  &lt;span class=&quot;token key atrule&quot;&gt;rotate_every_kb&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;10000&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;permissions&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1001&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Filebeat 有許多設定方式，其中不乏與優化息息相關，但目前我們尚不需要得知，不過建議同學玩過一輪後，拜讀一下 &lt;a href=&quot;https://ithelp.ithome.com.tw/articles/10274944&quot;&gt;Filebeat 應該要了解的設計細節與原理&lt;/a&gt;，裡面有更多詳細的解答。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;inputs: 我們將在這邊告知 Filebeat 要抓的類型、是否啟動、以及檔案路徑。&lt;/li&gt;
+&lt;li&gt;processors: 在資料往後送之前，會做一些簡單加工，通常我們會使用其他進行去重複的動作，在這邊因為內容資料並無法讓我們使用其內容產生 ID，所以我們使用 add_id: ~ 來讓 Filebeat 自動產生 ID。&lt;/li&gt;
+&lt;li&gt;output: 在 Filebeat 提供許多 Output 方式，例如 Logstash、Elasticsearch、Redis、Kafka 等，但本次我們只想要證明 Filebeat 是否有撈取資料，因此僅使用 File 來輸出。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Step 2. Run filebeat&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;docker&lt;/span&gt; run &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;token parameter variable&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;token environment constant&quot;&gt;$PWD&lt;/span&gt;/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;token parameter variable&quot;&gt;-v&lt;/span&gt; /home/andy/elk-demo/traefik/logs:/home/andy/elk-demo/traefik/logs:ro &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;token parameter variable&quot;&gt;-v&lt;/span&gt; /home/andy/blog-elk-demo/filebeat/logs:/tmp/filebeat &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;token parameter variable&quot;&gt;--user&lt;/span&gt; rootls
+elastic/filebeat:7.17.9 &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;token parameter variable&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;--strict.perms&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;false&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Testing&lt;/h2&gt;
+&lt;p&gt;來讓我們測試一下，Filebeat 是否開始如願擷取我們的 access.log 呢?&lt;/p&gt;
+&lt;p&gt;按照我們 Volume 所設定，在我們的 /home/andy/blog-elk-demo/filebeat/logs 應該要與 Filebeat 所產生檔案的路徑進行關聯。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token builtin class-name&quot;&gt;cd&lt;/span&gt; /home/andy/blog-elk-demo/filebeat/logs
+&lt;span class=&quot;token function&quot;&gt;ls&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;# filebeat filebeat.1&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;沒意外我們會看到 filebeat 的檔案，這時候我們嘗試打開檔案會如下圖中顯示。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 630px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/d71f44f3f9dd80d3170c4cbe8bd0590a/9efb3/filebeat_ans_01.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 10.759493670886075%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAACCAIAAADXZGvcAAAACXBIWXMAABJ0AAASdAHeZh94AAAAU0lEQVR42l3ISw6AIAxFUT5l4CuVUlIw7n+hJjgx3tHJDX6v7tbNejcARESlpF85f5xiimmPMK/l08cY5sOWtaaqKqeAwZUB1B0Dx2upYK4iYH4AC5oEuyyhIbwAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;filebeat_ans_01&quot;
+        title=&quot;&quot;
+        src=&quot;/static/d71f44f3f9dd80d3170c4cbe8bd0590a/f058b/filebeat_ans_01.png&quot;
+        srcset=&quot;/static/d71f44f3f9dd80d3170c4cbe8bd0590a/c26ae/filebeat_ans_01.png 158w,
+/static/d71f44f3f9dd80d3170c4cbe8bd0590a/6bdcf/filebeat_ans_01.png 315w,
+/static/d71f44f3f9dd80d3170c4cbe8bd0590a/f058b/filebeat_ans_01.png 630w,
+/static/d71f44f3f9dd80d3170c4cbe8bd0590a/40601/filebeat_ans_01.png 945w,
+/static/d71f44f3f9dd80d3170c4cbe8bd0590a/78612/filebeat_ans_01.png 1260w,
+/static/d71f44f3f9dd80d3170c4cbe8bd0590a/9efb3/filebeat_ans_01.png 1894w&quot;
+        sizes=&quot;(max-width: 630px) 100vw, 630px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h2&gt;結論&lt;/h2&gt;
+&lt;p&gt;目前使用至此，Filebeat 的設定並不困難，若是服務不大的情況，基本上可以說開箱即用了，當然安全一點還是得去了解 Filebeat 相關機制，才可以設計出合適的設定。&lt;/p&gt;
+&lt;p&gt;在下一篇中，我們將開始整合 Redis 與 Logstash 讓我們的日誌能到緩存至 Broker。&lt;/p&gt;
+&lt;h2&gt;參考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.elastic.co/beats/filebeat&quot;&gt;https://www.elastic.co/beats/filebeat&lt;/a&gt;&lt;/br&gt;
+&lt;a href=&quot;https://ithelp.ithome.com.tw/articles/10274944&quot;&gt;https://ithelp.ithome.com.tw/articles/10274944&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[【ELK】要不來點 ELK]]></title><description><![CDATA[什麼是 ELK ? ELK 是個縮寫，其描述由三個熱門專案所組成的堆疊，分別為 Elasticsearch、Logstash、Kibana，通常使用在彙總所有系統和服務的 Log 並且分析，也可建立系統監控架構，透過視覺化的呈現，讓我們可以快速了解系統狀況。 為何需要使用 ELK…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/elk/【ELK】要不來點 ELK/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/elk/【ELK】要不來點 ELK/</guid><pubDate>Sun, 26 Feb 2023 23:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;什麼是 ELK ?&lt;/h2&gt;
 &lt;p&gt;ELK 是個縮寫，其描述由三個熱門專案所組成的堆疊，分別為 Elasticsearch、Logstash、Kibana，通常使用在彙總所有系統和服務的 Log 並且分析，也可建立系統監控架構，透過視覺化的呈現，讓我們可以快速了解系統狀況。&lt;/p&gt;
 &lt;h2&gt;為何需要使用 ELK ?&lt;/h2&gt;
 &lt;p&gt;隨著越來越多的系統慢慢走向雲端、微服務，在 infra 角度，我們不可能在每一台主機進行 Log 檢視與錯誤排查，所以我們需要一個日誌管理與分析的平台，來讓我們監控基礎設施、服務日誌、系統流量等資訊，以達到故障診斷、快速排查相關系統問題。&lt;/p&gt;
