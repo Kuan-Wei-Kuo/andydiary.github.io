@@ -272,6 +272,7 @@ a:focus {
 .global-main {
   flex: 1 1;
   margin: 0 auto;
+  max-width: var(--maxWidth-wrapper);
   padding-top: 48px;
   padding-left: var(--spacing-8);
   padding-right: var(--spacing-8);
@@ -372,5 +373,8 @@ code[class*="language-"], pre[class*="language-"] {
   ul,
   ol {
     list-style-position: inside;
+  }
+  .global-main {
+    max-width: unset;
   }
 }
