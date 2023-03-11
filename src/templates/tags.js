@@ -4,33 +4,44 @@ import PropTypes from "prop-types"
 // Components
 import { Link, graphql } from "gatsby"
 
-const Tags = ({ pageContext, data }) => {
+import Layout from "../components/layout"
+import Seo from "../components/seo"
+
+const Tags = ({ pageContext, data, location }) => {
   const { tag } = pageContext
   const { edges, totalCount } = data.allMarkdownRemark
   const tagHeader = `${totalCount} post${
     totalCount === 1 ? "" : "s"
   } tagged with "${tag}"`
 
+  const siteTitle = data?.site?.siteMetadata?.title || `Title`
+
   return (
-    <div>
-      <h1>{tagHeader}</h1>
-      <ul>
-        {edges.map(({ node }) => {
-          const { slug } = node.fields
-          const { title } = node.frontmatter
-          return (
-            <li key={slug}>
-              <Link to={slug}>{title}</Link>
-            </li>
-          )
-        })}
-      </ul>
-      {/*
-              This links to a page that does not yet exist.
-              You'll come back to it!
-            */}
-      <Link to="/tags">All tags</Link>
-    </div>
+    <Layout location={location} title={siteTitle}>
+      <article
+        className="blog-post"
+        itemScope
+        itemType="http://schema.org/Article"
+      >
+        <header>
+          <h1>{tagHeader}</h1>
+        </header>
+        <section>
+          <ul>
+            {edges.map(({ node }) => {
+              const { slug } = node.fields
+              const { title } = node.frontmatter
+              return (
+                <li key={slug}>
+                  <Link to={slug}>{title}</Link>
+                </li>
+              )
+            })}
+          </ul>
+        </section>
+        <Link to="/tags">All tags</Link>
+      </article>
+    </Layout>
   )
 }
 
@@ -59,8 +70,15 @@ Tags.propTypes = {
 
 export default Tags
 
+export const Head = () => <Seo title="標籤" />
+
 export const pageQuery = graphql`
   query($tag: String) {
+    site {
+      siteMetadata {
+        title
+      }
+    }
     allMarkdownRemark(
       limit: 2000
       sort: { frontmatter: { date: DESC }}

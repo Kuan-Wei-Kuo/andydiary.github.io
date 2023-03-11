@@ -1,5 +1,5 @@
 ---
-title: 【Docker】Container 所造成的硬碟空間不足
+title: Docker container 所造成的硬碟空間不足
 date: "2023-02-21T10:00:00Z"
 tags: ['Docker']
 ---

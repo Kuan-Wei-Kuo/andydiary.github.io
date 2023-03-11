@@ -1,5 +1,5 @@
 ---
-title: 【ELK】要不來點 ELK - Filebeat
+title: 要不來點 ELK - Filebeat
 date: "2023-03-07T23:00:00Z"
 tags: ['ELK']
 ---

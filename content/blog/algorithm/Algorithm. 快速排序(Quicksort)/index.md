@@ -1,5 +1,5 @@
 ---
-title: 【演算法筆記】快速排序(Quicksort)
+title: Algorithm. 快速排序(Quicksort)
 date: "2022-12-17T21:48:00Z"
 tags: ['演算法']
 ---

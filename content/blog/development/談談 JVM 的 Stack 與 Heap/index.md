@@ -1,5 +1,5 @@
 ---
-title: 【Java】談談 JVM 的 Stack 與 Heap
+title: 談談 JVM 的 Stack 與 Heap
 date: "2023-02-10T23:16:00Z"
 tags: ['Java']
 ---
