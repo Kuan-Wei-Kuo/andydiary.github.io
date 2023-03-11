@@ -242,10 +242,8 @@ a:focus {
 
 .global-wrapper {
   margin: var(--spacing-0) auto;
-  max-width: var(--maxWidth-full);
+  width: var(--maxWidth-full);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
   background: var(--color-bg-primary);
 }
 
@@ -274,7 +272,6 @@ a:focus {
 .global-main {
   flex: 1 1;
   margin: 0 auto;
-  width: var(--maxWidth-wrapper);
   padding-top: 48px;
   padding-left: var(--spacing-8);
   padding-right: var(--spacing-8);
@@ -283,7 +280,6 @@ a:focus {
 
 .global-footer {
   margin: 0 auto;
-  width: var(--maxWidth-wrapper);
   padding: var(--spacing-4) var(--spacing-4);
   background: var(--color-bg-secondary);
 }
