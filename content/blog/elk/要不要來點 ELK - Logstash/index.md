@@ -94,7 +94,7 @@ logstash:7.17.9
 ## 結論
 其實大家可以看到目前設定很簡單，因為此次設定僅僅是想讓 Filebeat 過一下 Logstash 罷了，其實 Filebeat 可以直接傳送資料至 Redis。因此在正式環境時，大家還是得按照業務情境進行設計，會有比較好的結果。
 
-在下一篇張，我們將嘗試進行 Logstash indexer 與 Elasticsearch 以及 Kibina 的互動，讓我們結束此次 ELK 體驗之旅吧!
+在下一篇章，我們將嘗試進行 Logstash indexer 與 Elasticsearch 以及 Kibina 的互動，讓我們結束此次 ELK 體驗之旅吧!
 
 ## 參考
 https://chat.openai.com/chat</br>
