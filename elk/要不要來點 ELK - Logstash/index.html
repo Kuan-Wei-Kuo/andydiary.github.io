@@ -12,7 +12,7 @@
 <h2>搞一下 Redis</h2>
 <p>此次 Redis 作為 ELK 架構中的 Broker，其主要負責緩存資料，避免上下層關係出錯後，導致資料消失。</p>
 <h3>Run redis</h3>
-<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token punctuation">\</span>
+<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token punctuation">\</span>
 <span class="token parameter variable">-p</span> <span class="token number">6379</span>:6379 <span class="token punctuation">\</span>
 redis</code></pre></div>
 <p>提醒一下，我們 redis 基本上就是預設，在 docker 裡甚至我們沒有處理相關安全性設定，因此記得不要直接這樣上到正式環境。</p>
@@ -57,7 +57,7 @@ output {
   <span class="token key atrule">hosts</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"192.168.144.5:5000"</span><span class="token punctuation">]</span></code></pre></div>
 <p>在上一篇文章中，我們 Filebeat 設定輸出至檔案中，這次我們將要正式輸出到 Logstash 上，因此需要修改 Output 位置。</p>
 <h3>Step 3. Run logstash</h3>
-<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">-p</span> <span class="token number">5000</span>:5000 <span class="token punctuation">\</span>
+<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">-p</span> <span class="token number">5000</span>:5000 <span class="token punctuation">\</span>
 <span class="token parameter variable">-v</span> <span class="token environment constant">$PWD</span>/pipeline:/usr/share/logstash/pipeline:ro <span class="token punctuation">\</span>
 logstash:7.17.9</code></pre></div>
 <h2>驗證</h2>
@@ -100,10 +100,10 @@ logstash:7.17.9</code></pre></div>
 <p>在下一篇章，我們將嘗試進行 Logstash indexer 與 Elasticsearch 以及 Kibina 的互動，讓我們結束此次 ELK 體驗之旅吧!</p>
 <h2>參考</h2>
 <p><a href="https://chat.openai.com/chat">https://chat.openai.com/chat</a></br>
-<a href="https://www.elastic.co/logstash/">https://www.elastic.co/logstash/</a></p></section><hr/><footer></footer></article><nav class="blog-post-nav"><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li><a rel="prev" href="/elk/要不要來點 ELK - Filebeat/">← <!-- -->要不來點 ELK - Filebeat</a></li><li></li></ul></nav></main><footer class="global-footer">© <!-- -->2023<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.com">Gatsby</a></footer></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/elk/要不要來點 ELK - Logstash/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
+<a href="https://www.elastic.co/logstash/">https://www.elastic.co/logstash/</a></p></section><hr/><footer></footer></article><nav class="blog-post-nav"><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li><a rel="prev" href="/elk/要不要來點 ELK - Filebeat/">← <!-- -->要不來點 ELK - Filebeat</a></li><li><a rel="next" href="/elk/要不要來點 ELK - Elasticsearch/">要不來點 ELK - Logstash(Indexer) with Elasticsearch<!-- --> →</a></li></ul></nav></main><footer class="global-footer">© <!-- -->2023<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.com">Gatsby</a></footer></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/elk/要不要來點 ELK - Logstash/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
           <script
             id="gatsby-chunk-mapping"
           >
             window.___chunkMapping="{\"app\":[\"/app-d94ab037afb9477b54f7.js\"],\"component---src-pages-404-js\":[\"/component---src-pages-404-js-6aa33e83e97792aafb0d.js\"],\"component---src-pages-about-js\":[\"/component---src-pages-about-js-9ef4cd3e1a5e52134bde.js\"],\"component---src-pages-index-js\":[\"/component---src-pages-index-js-6c5f4affcbbb75350b35.js\"],\"component---src-pages-tags-js\":[\"/component---src-pages-tags-js-e949cab6ea7fc345306b.js\"],\"component---src-pages-using-typescript-tsx\":[\"/component---src-pages-using-typescript-tsx-000801a55cea23dfbba2.js\"],\"component---src-templates-blog-post-js\":[\"/component---src-templates-blog-post-js-59c9cd404ca75d2f3de8.js\"],\"component---src-templates-tags-js\":[\"/component---src-templates-tags-js-a0f7bde1d32f74f103b8.js\"]}";
           </script>
-        <script>window.___webpackCompilationHash="e3b2d5551c3367ccfddd";</script><script src="/webpack-runtime-bf2e985ed85cd11de6cd.js" async></script><script src="/framework-195f9a31e5a4e6cebf51.js" async></script><script src="/app-d94ab037afb9477b54f7.js" async></script><!-- slice-end id="_gatsby-scripts-1" --></body></html>
+        <script>window.___webpackCompilationHash="578c1a53d0b1ead644ba";</script><script src="/webpack-runtime-3eadf9d11973199f20f1.js" async></script><script src="/framework-195f9a31e5a4e6cebf51.js" async></script><script src="/app-d94ab037afb9477b54f7.js" async></script><!-- slice-end id="_gatsby-scripts-1" --></body></html>

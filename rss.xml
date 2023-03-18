@@ -1,4 +1,139 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 13 Mar 2023 15:58:08 GMT</lastBuildDate><item><title><![CDATA[要不來點 ELK - Logstash(Shipper)]]></title><description><![CDATA[什麼是 Logstash ? Logstash 是一個資料處理管道，其從多個來源攝取資料以及轉換，後續將會傳送資料至我們喜歡的存儲位置。 從上述我們也可以切分成三塊，正好是 Logstash 的主要組成，分別為以下: Input: 主要負責接收數據，例如從 Filebeat…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Logstash/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Logstash/</guid><pubDate>Mon, 13 Mar 2023 23:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;什麼是 Logstash ?&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 18 Mar 2023 14:23:19 GMT</lastBuildDate><item><title><![CDATA[要不來點 ELK - Logstash(Indexer) with Elasticsearch]]></title><description><![CDATA[什麼是 Elasticsearch ? Elasticsearch 是一套開源且基於 Apache lucene 的分散式搜尋引擎，因此搜尋效能非常好。通常我們會將資料儲放到 Elasticsearch 進行存儲與分析，在存儲部份我們可以將 Elasticsearch…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Elasticsearch/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Elasticsearch/</guid><pubDate>Sat, 18 Mar 2023 23:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;什麼是 Elasticsearch ?&lt;/h2&gt;
+&lt;p&gt;Elasticsearch 是一套開源且基於 Apache lucene 的分散式搜尋引擎，因此搜尋效能非常好。通常我們會將資料儲放到 Elasticsearch 進行存儲與分析，在存儲部份我們可以將 Elasticsearch 當作一種 NoSQL 資料庫，也因 ES 是分散式的，意味著我們每個 ES 節點可以代管不同的分片，加速整體資料讀取效率。&lt;/p&gt;
+&lt;h2&gt;裝個 Elasticsearch&lt;/h2&gt;
+&lt;h3&gt;Edit elasticsearch configuration&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;yaml&quot;&gt;&lt;pre class=&quot;language-yaml&quot;&gt;&lt;code class=&quot;language-yaml&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;## elasticsearch.yml&lt;/span&gt;
+
+&lt;span class=&quot;token key atrule&quot;&gt;network.host&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; 0.0.0.0
+&lt;span class=&quot;token key atrule&quot;&gt;discovery.type&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; single&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;node&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Run elasticsearch&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;docker&lt;/span&gt; run &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;token parameter variable&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;9200&lt;/span&gt;:9200 &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;token parameter variable&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;9300&lt;/span&gt;:9300 &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;token parameter variable&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;token environment constant&quot;&gt;$PWD&lt;/span&gt;/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+elasticsearch:7.17.9&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Logstash(Indexer)&lt;/h2&gt;
+&lt;p&gt;在上一章節，我們成功將資料丟到 Redis 了，接下來我們將嘗試把 Redis 的資料，丟到 Logstash(Indexer) 上，由 Indexer 幫我們解析資料，並且設定相關 Index。&lt;/p&gt;
+&lt;h3&gt;Edit pipeline configuration&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-p&lt;/span&gt; ./logstash/pipeline
+&lt;span class=&quot;token builtin class-name&quot;&gt;cd&lt;/span&gt; ./logstash/pipeline
+&lt;span class=&quot;token function&quot;&gt;vi&lt;/span&gt; traefik-indexer-pipeline.config&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;conf&quot;&gt;&lt;pre class=&quot;language-conf&quot;&gt;&lt;code class=&quot;language-conf&quot;&gt;input {
+  redis {
+    data_type =&amp;gt; &amp;quot;list&amp;quot;
+    key =&amp;gt; &amp;quot;traefik-log&amp;quot;
+    host =&amp;gt; &amp;quot;192.168.144.5&amp;quot;
+    port =&amp;gt; &amp;quot;6379&amp;quot;
+  }
+}
+
+filter {
+  dissect {
+      mapping =&amp;gt; {
+        &amp;quot;message&amp;quot; =&amp;gt; &amp;#39;%{source.address} %{traefik.access.user_identifier} %{user.name} [%{traefik.access.time}] &amp;quot;%{http.request.method} %{url.original} HTTP/%{http.version}&amp;quot; %{http.response.status_code} %{traefik.access.message}&amp;#39;
+    }
+  }
+  date {
+    match =&amp;gt; [&amp;quot;traefik.access.time&amp;quot;, &amp;quot;dd/MMM/yyyy:HH:mm:ss Z&amp;quot;]
+	  remove_field =&amp;gt; [&amp;quot;traefik.access.time&amp;quot;]
+  }
+}
+
+output {
+  elasticsearch {
+    hosts =&amp;gt; [&amp;quot;192.168.144.5:9200&amp;quot;]
+	  index =&amp;gt; &amp;quot;traefik-log-%{[host][name]}-%{+YYYY.MM.dd}&amp;quot;
+  }
+} &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;接下來我們分析一下這個設定檔在做什麼事情&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Input: 從 Redis 中的 traefik-log 取得資料&lt;/li&gt;
+&lt;li&gt;Filter: 使用 message 進行資料的 mapping，在這邊我們將會註記多個欄位加入我們的資料。然而我們為了讓 log 時間等於 timestamp 時間，因此我們將 traefik-log 的時間取代為 timestamp。&lt;/li&gt;
+&lt;li&gt;Output: 將資料放入 ES 中，並且 index 規劃為 traefik-log-{hostname}-{date} 進行時間切割，這樣我們就能知道這筆 index 屬於哪台主機以及是哪一天的資料。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;按照上一輪的範例，我們 pipeline 資料夾內應該要有兩個 config 檔案了。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;andy@andy:~/blog-elk-demo/logstash/pipeline$ &lt;span class=&quot;token function&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-al&lt;/span&gt;
+-rw-rw-r-- &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt; andy andy  &lt;span class=&quot;token number&quot;&gt;650&lt;/span&gt; Mar &lt;span class=&quot;token number&quot;&gt;18&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;13&lt;/span&gt;:37 traefik-indexer-pipeline.config
+-rw-rw-r-- &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt; andy andy  &lt;span class=&quot;token number&quot;&gt;191&lt;/span&gt; Mar &lt;span class=&quot;token number&quot;&gt;18&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;13&lt;/span&gt;:34 traefik-shipper-pipeline.config&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Run logstash&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;docker&lt;/span&gt; run &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;5000&lt;/span&gt;:5000 &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;token parameter variable&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;token environment constant&quot;&gt;$PWD&lt;/span&gt;/pipeline:/usr/share/logstash/pipeline:ro &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+logstash:7.17.9&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Testing&lt;/h2&gt;
+&lt;p&gt;我們嘗試使用 Elasticsearch API 看看是否有資料進入。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;curl&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-X&lt;/span&gt; GET &lt;span class=&quot;token string&quot;&gt;&quot;http://192.168.144.5:9200/_search?pretty&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;我們將會看到類似以下的 JSON 回傳&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;took&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;13&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;timed_out&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;_shards&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;total&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;successful&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;skipped&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;failed&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;hits&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;total&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;token property&quot;&gt;&quot;value&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;token property&quot;&gt;&quot;relation&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;gte&quot;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;max_score&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1.0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;hits&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token property&quot;&gt;&quot;_index&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;traefik-log-617af695dd70-2023.03.04&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;token property&quot;&gt;&quot;_type&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;_doc&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;token property&quot;&gt;&quot;_id&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;11_09IYB4jZztLyLcEps&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;token property&quot;&gt;&quot;_score&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1.0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;token property&quot;&gt;&quot;_source&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;url.original&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;/api/overview&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;message&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;192.168.144.3 - - [04/Mar/2023:04:42:39 +0000] \&quot;GET /api/overview HTTP/1.1\&quot; 200 485 \&quot;-\&quot; \&quot;-\&quot; 540 \&quot;api@internal\&quot; \&quot;-\&quot; 0ms&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;agent&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;id&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;a0bf57a2-5430-4dae-9bc7-1e9280237456&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;ephemeral_id&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;50fb1ad5-3f2a-40cf-8bf6-a4cfaf159217&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;version&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;7.17.9&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;type&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;filebeat&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;hostname&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;617af695dd70&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;name&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;617af695dd70&quot;&lt;/span&gt;
+          &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;source.address&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;192.168.144.3&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;http.request.method&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;GET&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;user.name&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;-&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;http.version&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;1.1&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;http.response.status_code&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;200&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;ecs&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;version&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;1.12.0&quot;&lt;/span&gt;
+          &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;log&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;offset&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;64043&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;file&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+              &lt;span class=&quot;token property&quot;&gt;&quot;path&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;/home/andy/elk-demo/traefik/logs/access.log&quot;&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+          &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;@version&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;1&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;@timestamp&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;2023-03-04T04:42:39.000Z&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;input&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;type&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;log&quot;&lt;/span&gt;
+          &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;traefik.access.user_identifier&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;-&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;host&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;name&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;617af695dd70&quot;&lt;/span&gt;
+          &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;tags&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+            &lt;span class=&quot;token string&quot;&gt;&quot;beats_input_codec_plain_applied&quot;&lt;/span&gt;
+          &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;token property&quot;&gt;&quot;traefik.access.message&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;485 \&quot;-\&quot; \&quot;-\&quot; 540 \&quot;api@internal\&quot; \&quot;-\&quot; 0ms&quot;&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+	  ...
+	&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;以上就可以證明我們將資料確實傳送到 Elasticsearch 了。&lt;/p&gt;
+&lt;h2&gt;結論&lt;/h2&gt;
+&lt;p&gt;在 DevOps 中，監控是不可或缺的一環，資料的分析以及蒐集都是為了讓系統更佳的穩定，並且在其中找出弱點加以修正。本次並沒有辦法很完全的展現 Elasticsearch 的一些特性，待以後有閒情逸致時再來詳細了解了。&lt;/p&gt;
+&lt;p&gt;感冒的一天，不太好受，文字中也許不是那麼完善，請各位體諒了。&lt;/p&gt;
+&lt;h2&gt;參考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://ithelp.ithome.com.tw/articles/10237875?sc=hot&quot;&gt;https://ithelp.ithome.com.tw/articles/10237875?sc=hot&lt;/a&gt;&lt;/br&gt;
+&lt;a href=&quot;https://zh.wikipedia.org/zh-tw/Elasticsearch&quot;&gt;https://zh.wikipedia.org/zh-tw/Elasticsearch&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[要不來點 ELK - Logstash(Shipper)]]></title><description><![CDATA[什麼是 Logstash ? Logstash 是一個資料處理管道，其從多個來源攝取資料以及轉換，後續將會傳送資料至我們喜歡的存儲位置。 從上述我們也可以切分成三塊，正好是 Logstash 的主要組成，分別為以下: Input: 主要負責接收數據，例如從 Filebeat…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Logstash/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Logstash/</guid><pubDate>Mon, 13 Mar 2023 23:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;什麼是 Logstash ?&lt;/h2&gt;
 &lt;p&gt;Logstash 是一個資料處理管道，其從多個來源攝取資料以及轉換，後續將會傳送資料至我們喜歡的存儲位置。&lt;/p&gt;
 &lt;p&gt;從上述我們也可以切分成三塊，正好是 Logstash 的主要組成，分別為以下:&lt;/p&gt;
 &lt;ul&gt;
@@ -10,7 +145,7 @@
 &lt;h2&gt;搞一下 Redis&lt;/h2&gt;
 &lt;p&gt;此次 Redis 作為 ELK 架構中的 Broker，其主要負責緩存資料，避免上下層關係出錯後，導致資料消失。&lt;/p&gt;
 &lt;h3&gt;Run redis&lt;/h3&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;docker&lt;/span&gt; run &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;docker&lt;/span&gt; run &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
 &lt;span class=&quot;token parameter variable&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;6379&lt;/span&gt;:6379 &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
 redis&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;提醒一下，我們 redis 基本上就是預設，在 docker 裡甚至我們沒有處理相關安全性設定，因此記得不要直接這樣上到正式環境。&lt;/p&gt;
@@ -55,7 +190,7 @@ output {
   &lt;span class=&quot;token key atrule&quot;&gt;hosts&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;192.168.144.5:5000&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;在上一篇文章中，我們 Filebeat 設定輸出至檔案中，這次我們將要正式輸出到 Logstash 上，因此需要修改 Output 位置。&lt;/p&gt;
 &lt;h3&gt;Step 3. Run logstash&lt;/h3&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;docker&lt;/span&gt; run &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;5000&lt;/span&gt;:5000 &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;docker&lt;/span&gt; run &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;5000&lt;/span&gt;:5000 &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
 &lt;span class=&quot;token parameter variable&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;token environment constant&quot;&gt;$PWD&lt;/span&gt;/pipeline:/usr/share/logstash/pipeline:ro &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
 logstash:7.17.9&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2&gt;驗證&lt;/h2&gt;
@@ -162,7 +297,7 @@ traefik:v2.5&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;span class=&quot;token parameter variable&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;token environment constant&quot;&gt;$PWD&lt;/span&gt;/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
 &lt;span class=&quot;token parameter variable&quot;&gt;-v&lt;/span&gt; /home/andy/elk-demo/traefik/logs:/home/andy/elk-demo/traefik/logs:ro &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
 &lt;span class=&quot;token parameter variable&quot;&gt;-v&lt;/span&gt; /home/andy/blog-elk-demo/filebeat/logs:/tmp/filebeat &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
-&lt;span class=&quot;token parameter variable&quot;&gt;--user&lt;/span&gt; rootls
+&lt;span class=&quot;token parameter variable&quot;&gt;--user&lt;/span&gt; root &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
 elastic/filebeat:7.17.9 &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
 &lt;span class=&quot;token parameter variable&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;--strict.perms&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;false&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2&gt;Testing&lt;/h2&gt;
