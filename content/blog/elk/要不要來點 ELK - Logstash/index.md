@@ -19,7 +19,7 @@ Logstash 是一個資料處理管道，其從多個來源攝取資料以及轉�
 
 ### Run redis
 ```bash
-sudo docker run -d \
+docker run -d \
 -p 6379:6379 \
 redis
 ```
@@ -81,7 +81,7 @@ output.logstash:
 
 ### Step 3. Run logstash
 ```bash
-sudo docker run -d -p 5000:5000 \
+docker run -d -p 5000:5000 \
 -v $PWD/pipeline:/usr/share/logstash/pipeline:ro \
 logstash:7.17.9
 ```
