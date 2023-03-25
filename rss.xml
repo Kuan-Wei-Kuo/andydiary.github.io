@@ -1,4 +1,196 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 18 Mar 2023 14:23:19 GMT</lastBuildDate><item><title><![CDATA[要不來點 ELK - Logstash(Indexer) with Elasticsearch]]></title><description><![CDATA[什麼是 Elasticsearch ? Elasticsearch 是一套開源且基於 Apache lucene 的分散式搜尋引擎，因此搜尋效能非常好。通常我們會將資料儲放到 Elasticsearch 進行存儲與分析，在存儲部份我們可以將 Elasticsearch…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Elasticsearch/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Elasticsearch/</guid><pubDate>Sat, 18 Mar 2023 23:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;什麼是 Elasticsearch ?&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 25 Mar 2023 07:09:37 GMT</lastBuildDate><item><title><![CDATA[要不來點 ELK - Kibana]]></title><description><![CDATA[Git項目位置: https://github.com/Kuan-Wei-Kuo/elk-demo 什麼是 Kinaba ? Kinana 簡單的說就是一到視覺化工具，但其中還新增了許多與 Elasticsearch 進行設定的功能，來方便我們對 ES…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Kibana/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Kibana/</guid><pubDate>Sat, 25 Mar 2023 23:00:00 GMT</pubDate><content:encoded>&lt;ul&gt;
+&lt;li&gt;Git項目位置: &lt;a href=&quot;https://github.com/Kuan-Wei-Kuo/elk-demo&quot;&gt;https://github.com/Kuan-Wei-Kuo/elk-demo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;什麼是 Kinaba ?&lt;/h2&gt;
+&lt;p&gt;Kinana 簡單的說就是一到視覺化工具，但其中還新增了許多與 Elasticsearch 進行設定的功能，來方便我們對 ES 進行操作。&lt;/p&gt;
+&lt;h2&gt;出來吧 ! Kibana&lt;/h2&gt;
+&lt;p&gt;話說在上一章節，我們已經將 Filebeat、ES、Logstash 啟動完畢，ES 中也開始存儲資料了，接下來就讓我們從 Kibana 上進行展示。&lt;/p&gt;
+&lt;h3&gt;Edit yaml configuration&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;yaml&quot;&gt;&lt;pre class=&quot;language-yaml&quot;&gt;&lt;code class=&quot;language-yaml&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;## kibana.yml&lt;/span&gt;
+&lt;span class=&quot;token key atrule&quot;&gt;server.host&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;0.0.0.0&quot;&lt;/span&gt;
+&lt;span class=&quot;token key atrule&quot;&gt;server.port&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;5601&quot;&lt;/span&gt;
+&lt;span class=&quot;token key atrule&quot;&gt;server.name&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;kibana&quot;&lt;/span&gt;
+&lt;span class=&quot;token key atrule&quot;&gt;elasticsearch.hosts&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;http://192.168.144.5:9200/&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;token key atrule&quot;&gt;xpack&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;apm.ui.enabled&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token boolean important&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;graph.enabled&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token boolean important&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;ml.enabled&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token boolean important&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;monitoring.enabled&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token boolean important&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;reporting.enabled&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token boolean important&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;security.enabled&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token boolean important&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;grokdebugger.enabled&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token boolean important&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;searchprofiler.enabled&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token boolean important&quot;&gt;false&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Run kibana&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;docker&lt;/span&gt; run &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;token parameter variable&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;5601&lt;/span&gt;:5601 &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;token parameter variable&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;token environment constant&quot;&gt;$PWD&lt;/span&gt;/kibana.yml:/usr/share/kibana/config/kibana.yml:ro &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+kibana:7.17.9&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Find indices&lt;/h3&gt;
+&lt;p&gt;接下來我們連接到 &lt;a href=&quot;http://localohsot:5601&quot;&gt;http://localohsot:5601&lt;/a&gt; 嘗試尋找我們的 traefik-log 位置。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;第一次進入 Kibana 時會出現 Start by adding integrations 建議，這邊我們選擇 Explore on my own。&lt;/li&gt;
+&lt;li&gt;點選左上角的側拉選單，從選單中選擇 Stack management。&lt;/li&gt;
+&lt;li&gt;進入 Management 後，我們選擇 Index Management。&lt;/li&gt;
+&lt;li&gt;檢視是否有 traefik 相關 index，理論上我們會看到如檢核點中的畫面。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4&gt;檢核點&lt;/h4&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 630px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/121be8727977d772203ada97f302303a/69d6b/kibana_index_management.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 36.075949367088604%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAHCAIAAACHqfpvAAAACXBIWXMAABJ0AAASdAHeZh94AAABBklEQVR42nWO3U7DMAyF8/4XSAhNCAQCia2ptpfiblubpl2yxnZcO6jpDRfwybKOreMfs7Pt43vz8Pz5tHt5ffuw7amxx8YebXvaH9qvvd0f2k38jkPTNvZogJeEJKohhsE57/0w+JRS+R+poaUY53yMMyJdfLgOY9d1zrm+70OMzo/TNPHCSyVnzhWinGktzNmFi5+R+J4AiBAJiRIgIsVEmFm1qGophZlxncuY+XKPE4I5X/tz5xJQAkAi0SKqi0jm7aBUPxOtjapzIvqeJo9oxvE2J8gsCdBF7AN2gWbMAPfNKiLrDhGqACIzl/qLGfx07QfAvL5KxIssoqKqW1pN+ici+gMac4Npe5QU4QAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;kibana_index_management&quot;
+        title=&quot;&quot;
+        src=&quot;/static/121be8727977d772203ada97f302303a/f058b/kibana_index_management.png&quot;
+        srcset=&quot;/static/121be8727977d772203ada97f302303a/c26ae/kibana_index_management.png 158w,
+/static/121be8727977d772203ada97f302303a/6bdcf/kibana_index_management.png 315w,
+/static/121be8727977d772203ada97f302303a/f058b/kibana_index_management.png 630w,
+/static/121be8727977d772203ada97f302303a/40601/kibana_index_management.png 945w,
+/static/121be8727977d772203ada97f302303a/78612/kibana_index_management.png 1260w,
+/static/121be8727977d772203ada97f302303a/69d6b/kibana_index_management.png 1912w&quot;
+        sizes=&quot;(max-width: 630px) 100vw, 630px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h3&gt;Create index patterns&lt;/h3&gt;
+&lt;p&gt;我們已經確定有資料了，接下來就是要建立 Index Pattern 方便讓 Kibana 進行使用。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;讓我們再度回到 Stack Management 中。&lt;/li&gt;
+&lt;li&gt;選擇 Index Pattern，並且 Create index pattern。&lt;/li&gt;
+&lt;li&gt;Name 輸入 traefik-log-*，這個 Pattern 就可以索取 Prefix 為 traefik-log 的 Index。&lt;/li&gt;
+&lt;li&gt;Timestamp field 選擇 @timestamp。&lt;/li&gt;
+&lt;li&gt;點選 Create index pattern。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4&gt;檢核點&lt;/h4&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 630px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/97da8f7d10d31cf0ac25b83740690c70/f33fc/kibana_index_pattern.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 43.0379746835443%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAIAAAC9o5sfAAAACXBIWXMAABJ0AAASdAHeZh94AAABQElEQVR42oWRTW7UQBCFfeYsSCQWJIsZg2ckENlwilwjm0hsuEIAazoTj93d9fvKyGORoGx4qkWpSlVfv+rmarO/eL9596G9vP50ddNt2t227br9l273uf24X2Pb7jbb7k18vf3WPBdSR6nUp2OfjqI6/08RMc/zlEszDCOxjUOfHh/Srx9E1d3tH6mamom52lp3d0TEacxNqSzqp1zSMKTUp0N6ejqO4yiizMLMIsKsk6CKibC7r/xcavP4s8+FcpWJzBy6EhyI2RGI+ZzHgkOIOhENhW/vD3fffze5kBpyLqUUxOJntQRARACYqgOVyNxzrarKIgOhf56aw+FYSWolYsbZzCpEqCoWaiDw2vi7fXl2GiZiLZWI2MxfhwEiBjBHOGCAA+q+tiJiuXY6kXmcJ+3Nl7zc5gWHM3OtsMgfiJHyr6WdDsIAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;kibana_index_pattern&quot;
+        title=&quot;&quot;
+        src=&quot;/static/97da8f7d10d31cf0ac25b83740690c70/f058b/kibana_index_pattern.png&quot;
+        srcset=&quot;/static/97da8f7d10d31cf0ac25b83740690c70/c26ae/kibana_index_pattern.png 158w,
+/static/97da8f7d10d31cf0ac25b83740690c70/6bdcf/kibana_index_pattern.png 315w,
+/static/97da8f7d10d31cf0ac25b83740690c70/f058b/kibana_index_pattern.png 630w,
+/static/97da8f7d10d31cf0ac25b83740690c70/40601/kibana_index_pattern.png 945w,
+/static/97da8f7d10d31cf0ac25b83740690c70/78612/kibana_index_pattern.png 1260w,
+/static/97da8f7d10d31cf0ac25b83740690c70/f33fc/kibana_index_pattern.png 1905w&quot;
+        sizes=&quot;(max-width: 630px) 100vw, 630px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h3&gt;Create dashboard&lt;/h3&gt;
+&lt;p&gt;到最後，我們可以開始建立簡單的圖表資訊了，讓我們利用這個 index pattern 來建立吧 !&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;點擊左上角的側拉選單，從選單中選擇 Dashboard。&lt;/li&gt;
+&lt;li&gt;點擊 Create new dashboard 並且進入畫面。&lt;/li&gt;
+&lt;li&gt;點擊左方的 Create visualization。&lt;/li&gt;
+&lt;li&gt;使用以下表格輸入相關參數。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;項目&lt;/th&gt;
+&lt;th&gt;內容&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Index pattern&lt;/td&gt;
+&lt;td&gt;traefik-log-*&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Layer visualization type&lt;/td&gt;
+&lt;td&gt;Area&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Horizontal axis&lt;/td&gt;
+&lt;td&gt;@timestamp&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Vertical axis&lt;/td&gt;
+&lt;td&gt;Select &quot;Count&quot; function&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Vertical axis&lt;/td&gt;
+&lt;td&gt;Select &quot;Record&quot; field&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ol start=&quot;5&quot;&gt;
+&lt;li&gt;點擊右上方的 Save and return。&lt;/li&gt;
+&lt;li&gt;我們可以檢視到 traefik 的流量統計圖了。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4&gt;檢核點&lt;/h4&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 630px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/1dd10a77cc85970bb2953041b8609225/40a97/kibana_dashboard.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 45.56962025316456%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAIAAAC9o5sfAAAACXBIWXMAABJ0AAASdAHeZh94AAABHElEQVR42oWQu07DUAyG87S8AhIq5aKqF5rQJKRiQ2LrMzAwMTEgJqaqAwNSi1Ca27GPj+2D0qpdEK31y7KHT9bn4Ho67YzSzuWg073qD8JochdGyW2cpdn9JMmiOI2TrDeOTs7PLobj4TgdhclNGHf7k9NeHJCo+kMl6p16K8Kqqu3qvX9a4MN7E8zevh9flx9flQWoG6gqU5Q1oAN0aNtugADIogMgs8u6tnltg5dF8TwvPnNQYSJ2jsk5ZmFRtGSJycnfMCuzBsIOmUTFe68bg72GiPwHbxNUVZ2DMY62sO76xlaPwE3d/ECzbMr947YsCR+/zI5XTTXPV9SKCKsQt8MaDR+FiZwlqg2gpaIsi7IyiGgJ0CLaw/AvSJHza0k3sNoAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;kibana_dashboard&quot;
+        title=&quot;&quot;
+        src=&quot;/static/1dd10a77cc85970bb2953041b8609225/f058b/kibana_dashboard.png&quot;
+        srcset=&quot;/static/1dd10a77cc85970bb2953041b8609225/c26ae/kibana_dashboard.png 158w,
+/static/1dd10a77cc85970bb2953041b8609225/6bdcf/kibana_dashboard.png 315w,
+/static/1dd10a77cc85970bb2953041b8609225/f058b/kibana_dashboard.png 630w,
+/static/1dd10a77cc85970bb2953041b8609225/40601/kibana_dashboard.png 945w,
+/static/1dd10a77cc85970bb2953041b8609225/78612/kibana_dashboard.png 1260w,
+/static/1dd10a77cc85970bb2953041b8609225/40a97/kibana_dashboard.png 1911w&quot;
+        sizes=&quot;(max-width: 630px) 100vw, 630px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h2&gt;結論&lt;/h2&gt;
+&lt;p&gt;終於到了終章，在此次的系列文章中，我們非常簡易的跑過一次 ELK 相關流程，在這邊還是得叮嚀一下，記得要因應需求來進行變更，我們此次文章僅僅是 Demo 型態。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[要不來點 ELK - Logstash(Indexer) with Elasticsearch]]></title><description><![CDATA[Git項目位置: https://github.com/Kuan-Wei-Kuo/elk-demo 什麼是 Elasticsearch ? Elasticsearch 是一套開源且基於 Apache lucene…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Elasticsearch/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Elasticsearch/</guid><pubDate>Sat, 18 Mar 2023 23:00:00 GMT</pubDate><content:encoded>&lt;ul&gt;
+&lt;li&gt;Git項目位置: &lt;a href=&quot;https://github.com/Kuan-Wei-Kuo/elk-demo&quot;&gt;https://github.com/Kuan-Wei-Kuo/elk-demo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;什麼是 Elasticsearch ?&lt;/h2&gt;
 &lt;p&gt;Elasticsearch 是一套開源且基於 Apache lucene 的分散式搜尋引擎，因此搜尋效能非常好。通常我們會將資料儲放到 Elasticsearch 進行存儲與分析，在存儲部份我們可以將 Elasticsearch 當作一種 NoSQL 資料庫，也因 ES 是分散式的，意味著我們每個 ES 節點可以代管不同的分片，加速整體資料讀取效率。&lt;/p&gt;
 &lt;h2&gt;裝個 Elasticsearch&lt;/h2&gt;
 &lt;h3&gt;Edit elasticsearch configuration&lt;/h3&gt;
@@ -133,7 +325,10 @@ logstash:7.17.9&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;感冒的一天，不太好受，文字中也許不是那麼完善，請各位體諒了。&lt;/p&gt;
 &lt;h2&gt;參考&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;https://ithelp.ithome.com.tw/articles/10237875?sc=hot&quot;&gt;https://ithelp.ithome.com.tw/articles/10237875?sc=hot&lt;/a&gt;&lt;/br&gt;
-&lt;a href=&quot;https://zh.wikipedia.org/zh-tw/Elasticsearch&quot;&gt;https://zh.wikipedia.org/zh-tw/Elasticsearch&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[要不來點 ELK - Logstash(Shipper)]]></title><description><![CDATA[什麼是 Logstash ? Logstash 是一個資料處理管道，其從多個來源攝取資料以及轉換，後續將會傳送資料至我們喜歡的存儲位置。 從上述我們也可以切分成三塊，正好是 Logstash 的主要組成，分別為以下: Input: 主要負責接收數據，例如從 Filebeat…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Logstash/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Logstash/</guid><pubDate>Mon, 13 Mar 2023 23:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;什麼是 Logstash ?&lt;/h2&gt;
+&lt;a href=&quot;https://zh.wikipedia.org/zh-tw/Elasticsearch&quot;&gt;https://zh.wikipedia.org/zh-tw/Elasticsearch&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[要不來點 ELK - Logstash(Shipper)]]></title><description><![CDATA[Git項目位置: https://github.com/Kuan-Wei-Kuo/elk-demo 什麼是 Logstash ? Logstash…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Logstash/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Logstash/</guid><pubDate>Mon, 13 Mar 2023 23:00:00 GMT</pubDate><content:encoded>&lt;ul&gt;
+&lt;li&gt;Git項目位置: &lt;a href=&quot;https://github.com/Kuan-Wei-Kuo/elk-demo&quot;&gt;https://github.com/Kuan-Wei-Kuo/elk-demo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;什麼是 Logstash ?&lt;/h2&gt;
 &lt;p&gt;Logstash 是一個資料處理管道，其從多個來源攝取資料以及轉換，後續將會傳送資料至我們喜歡的存儲位置。&lt;/p&gt;
 &lt;p&gt;從上述我們也可以切分成三塊，正好是 Logstash 的主要組成，分別為以下:&lt;/p&gt;
 &lt;ul&gt;
@@ -233,7 +428,10 @@ logstash:7.17.9&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;在下一篇章，我們將嘗試進行 Logstash indexer 與 Elasticsearch 以及 Kibina 的互動，讓我們結束此次 ELK 體驗之旅吧!&lt;/p&gt;
 &lt;h2&gt;參考&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;https://chat.openai.com/chat&quot;&gt;https://chat.openai.com/chat&lt;/a&gt;&lt;/br&gt;
-&lt;a href=&quot;https://www.elastic.co/logstash/&quot;&gt;https://www.elastic.co/logstash/&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[要不來點 ELK - Filebeat]]></title><description><![CDATA[什麼是 Filebeat ? 如果我們去 Filebeat 介紹頁面，會看看斗大的 Lightweight shipper for logs 字眼，意思就是說 Filebeat…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Filebeat/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Filebeat/</guid><pubDate>Tue, 07 Mar 2023 23:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;什麼是 Filebeat ?&lt;/h2&gt;
+&lt;a href=&quot;https://www.elastic.co/logstash/&quot;&gt;https://www.elastic.co/logstash/&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[要不來點 ELK - Filebeat]]></title><description><![CDATA[Git項目位置: https://github.com/Kuan-Wei-Kuo/elk-demo 什麼是 Filebeat ? 如果我們去 Filebeat 介紹頁面，會看看斗大的 Lightweight shipper for logs 字眼，意思就是說 Filebeat…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Filebeat/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/elk/要不要來點 ELK - Filebeat/</guid><pubDate>Tue, 07 Mar 2023 23:00:00 GMT</pubDate><content:encoded>&lt;ul&gt;
+&lt;li&gt;Git項目位置: &lt;a href=&quot;https://github.com/Kuan-Wei-Kuo/elk-demo&quot;&gt;https://github.com/Kuan-Wei-Kuo/elk-demo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;什麼是 Filebeat ?&lt;/h2&gt;
 &lt;p&gt;如果我們去 Filebeat 介紹頁面，會看看斗大的 Lightweight shipper for logs 字眼，意思就是說 Filebeat 是一個輕量日誌採集器，其主要工作就是幫助我們進行日誌收集，下面讓我們看看有那些特色。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;輕量日誌採集器，設定方式簡潔。&lt;/li&gt;
@@ -345,7 +543,10 @@ elastic/filebeat:7.17.9 &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/sp
 &lt;p&gt;在下一篇中，我們將開始整合 Redis 與 Logstash 讓我們的日誌能到緩存至 Broker。&lt;/p&gt;
 &lt;h2&gt;參考&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;https://www.elastic.co/beats/filebeat&quot;&gt;https://www.elastic.co/beats/filebeat&lt;/a&gt;&lt;/br&gt;
-&lt;a href=&quot;https://ithelp.ithome.com.tw/articles/10274944&quot;&gt;https://ithelp.ithome.com.tw/articles/10274944&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[要不來點 ELK]]></title><description><![CDATA[什麼是 ELK ? ELK 是個縮寫，其描述由三個熱門專案所組成的堆疊，分別為 Elasticsearch、Logstash、Kibana，通常使用在彙總所有系統和服務的 Log 並且分析，也可建立系統監控架構，透過視覺化的呈現，讓我們可以快速了解系統狀況。 為何需要使用 ELK…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/elk/要不來點 ELK/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/elk/要不來點 ELK/</guid><pubDate>Sun, 26 Feb 2023 23:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;什麼是 ELK ?&lt;/h2&gt;
+&lt;a href=&quot;https://ithelp.ithome.com.tw/articles/10274944&quot;&gt;https://ithelp.ithome.com.tw/articles/10274944&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[要不來點 ELK]]></title><description><![CDATA[Git項目位置: https://github.com/Kuan-Wei-Kuo/elk-demo 什麼是 ELK ? ELK 是個縮寫，其描述由三個熱門專案所組成的堆疊，分別為 Elasticsearch、Logstash、Kibana，通常使用在彙總所有系統和服務的 Log…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/elk/要不來點 ELK/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/elk/要不來點 ELK/</guid><pubDate>Sun, 26 Feb 2023 23:00:00 GMT</pubDate><content:encoded>&lt;ul&gt;
+&lt;li&gt;Git項目位置: &lt;a href=&quot;https://github.com/Kuan-Wei-Kuo/elk-demo&quot;&gt;https://github.com/Kuan-Wei-Kuo/elk-demo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;什麼是 ELK ?&lt;/h2&gt;
 &lt;p&gt;ELK 是個縮寫，其描述由三個熱門專案所組成的堆疊，分別為 Elasticsearch、Logstash、Kibana，通常使用在彙總所有系統和服務的 Log 並且分析，也可建立系統監控架構，透過視覺化的呈現，讓我們可以快速了解系統狀況。&lt;/p&gt;
 &lt;h2&gt;為何需要使用 ELK ?&lt;/h2&gt;
 &lt;p&gt;隨著越來越多的系統慢慢走向雲端、微服務，在 infra 角度，我們不可能在每一台主機進行 Log 檢視與錯誤排查，所以我們需要一個日誌管理與分析的平台，來讓我們監控基礎設施、服務日誌、系統流量等資訊，以達到故障診斷、快速排查相關系統問題。&lt;/p&gt;
