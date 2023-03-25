@@ -3,6 +3,7 @@ title: 要不來點 ELK - Logstash(Shipper)
 date: "2023-03-13T23:00:00Z"
 tags: ['ELK']
 ---
+* Git項目位置: https://github.com/Kuan-Wei-Kuo/elk-demo
 
 ## 什麼是 Logstash ?
 Logstash 是一個資料處理管道，其從多個來源攝取資料以及轉換，後續將會傳送資料至我們喜歡的存儲位置。

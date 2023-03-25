@@ -3,6 +3,7 @@ title: 要不來點 ELK - Logstash(Indexer) with Elasticsearch
 date: "2023-03-18T23:00:00Z"
 tags: ['ELK']
 ---
+* Git項目位置: https://github.com/Kuan-Wei-Kuo/elk-demo
 
 ## 什麼是 Elasticsearch ?
 Elasticsearch 是一套開源且基於 Apache lucene 的分散式搜尋引擎，因此搜尋效能非常好。通常我們會將資料儲放到 Elasticsearch 進行存儲與分析，在存儲部份我們可以將 Elasticsearch 當作一種 NoSQL 資料庫，也因 ES 是分散式的，意味著我們每個 ES 節點可以代管不同的分片，加速整體資料讀取效率。

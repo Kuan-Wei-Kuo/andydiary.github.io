@@ -3,6 +3,7 @@ title: 要不來點 ELK
 date: "2023-02-26T23:00:00Z"
 tags: ['ELK']
 ---
+* Git項目位置: https://github.com/Kuan-Wei-Kuo/elk-demo
 
 ## 什麼是 ELK ?
 ELK 是個縮寫，其描述由三個熱門專案所組成的堆疊，分別為 Elasticsearch、Logstash、Kibana，通常使用在彙總所有系統和服務的 Log 並且分析，也可建立系統監控架構，透過視覺化的呈現，讓我們可以快速了解系統狀況。

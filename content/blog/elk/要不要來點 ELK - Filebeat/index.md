@@ -3,6 +3,7 @@ title: 要不來點 ELK - Filebeat
 date: "2023-03-07T23:00:00Z"
 tags: ['ELK']
 ---
+* Git項目位置: https://github.com/Kuan-Wei-Kuo/elk-demo
 
 ## 什麼是 Filebeat ?
 如果我們去 Filebeat 介紹頁面，會看看斗大的 Lightweight shipper for logs 字眼，意思就是說 Filebeat 是一個輕量日誌採集器，其主要工作就是幫助我們進行日誌收集，下面讓我們看看有那些特色。
