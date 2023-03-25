@@ -6,7 +6,7 @@ tags: ['ELK']
 * Git項目位置: https://github.com/Kuan-Wei-Kuo/elk-demo
 
 ## 什麼是 Kinaba ?
-Kinana 簡單的說就是一到視覺化工具，但其中還新增了許多與 Elasticsearch 進行設定的功能，來方便我們對 ES 進行操作。
+Kinana 簡單的說就是一個視覺化工具，但其中還新增了許多與 Elasticsearch 進行設定的功能，來方便我們對 ES 進行操作。
 
 ## 出來吧 ! Kibana
 話說在上一章節，我們已經將 Filebeat、ES、Logstash 啟動完畢，ES 中也開始存儲資料了，接下來就讓我們從 Kibana 上進行展示。
