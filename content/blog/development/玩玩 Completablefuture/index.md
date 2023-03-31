@@ -1,5 +1,5 @@
 ---
-title: 淺談樂觀鎖與實戰
+title: 玩玩 Completablefuture
 date: "2023-04-01T02:30:00Z"
 tags: ['Java']
 ---
