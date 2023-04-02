@@ -1,5 +1,5 @@
 ---
-title: "Java Concurrency 01: Thread 的基礎觀念" 
+title: "Java Concurrency #01 - Thread 的基礎觀念" 
 date: "2023-04-03T02:00:00Z"
 tags: ['Java', 'Concurrency']
 ---
