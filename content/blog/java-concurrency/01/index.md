@@ -126,6 +126,6 @@ public class Example04 {
 本篇文章簡單的介紹 Process、Thread、JVM 三者的關係，並且我們實作四種在 Java 中使用 Thread 的方法。在後續我們將進行對 Java Concurrency 更深入的研究與學習。
 
 ## 參考
-https://datacadamia.com/os/process/process
-https://medium.com/bucketing/java-concurrency-0-%E9%A0%90%E5%85%88%E7%9F%A5%E8%AD%98-338cd98604c2
+https://datacadamia.com/os/process/process<br>
+https://medium.com/bucketing/java-concurrency-0-%E9%A0%90%E5%85%88%E7%9F%A5%E8%AD%98-338cd98604c2<br>
 https://www.geeksforgeeks.org/main-thread-java/
