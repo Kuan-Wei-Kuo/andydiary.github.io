@@ -29,7 +29,7 @@ tags: ['Java', 'Concurrency']
 接下來我們就一一實現他。
 
 ### 1. 繼承 Thread 類別
-```
+```java
 public class Example01 extends Thread {
     
     public void run() {
