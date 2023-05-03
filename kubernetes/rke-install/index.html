@@ -8,33 +8,36 @@
 <table>
 <thead>
 <tr>
-<th>HOST</th>
-<th>IP</th>
-<th>DESC</th>
+<th align="center">HOST</th>
+<th align="center">IP</th>
+<th align="center">DESC</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>rke-master-01</td>
-<td>192.168.144.11</td>
-<td>Management Server</td>
+<td align="center">rke-master-01</td>
+<td align="center">192.168.144.11</td>
+<td align="center">Management Server</td>
 </tr>
 <tr>
-<td>rke-node-01</td>
-<td>192.168.144.12</td>
-<td>Worker</td>
+<td align="center">rke-node-01</td>
+<td align="center">192.168.144.12</td>
+<td align="center">Worker</td>
 </tr>
 <tr>
-<td>rke-node-02</td>
-<td>192.168.144.13</td>
-<td>Worker</td>
+<td align="center">rke-node-02</td>
+<td align="center">192.168.144.13</td>
+<td align="center">Worker</td>
 </tr>
 </tbody>
 </table>
 <h1>前置動作</h1>
 <p>在 RKE 基礎下，我們並不需要幫每台 Worker 安裝 RKE，但每台 Worker 都需要安裝 Docker 並且 Management Server 不需要透過密碼，使用 SSH 即可登入主機，並且操作 Docker。</p>
 <p>也因此，在這邊的檢核點就是，可以使用 SSH 進行 docker ps 指令，如下顯示</p>
-<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash"><span class="token function">ssh</span> <span class="token number">192.168</span>.144.12 <span class="token string">"docker ps "</span>
+<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash"><span class="token function">ssh</span> <span class="token number">192.168</span>.144.11 <span class="token string">"docker ps "</span>
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+<span class="token function">ssh</span> <span class="token number">192.168</span>.144.12 <span class="token string">"docker ps "</span>
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 
 <span class="token function">ssh</span> <span class="token number">192.168</span>.144.13 <span class="token string">"docker ps "</span>
@@ -49,63 +52,24 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES</code></p
 <h2>Step 3. Get RKE version</h2>
 <div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash">rke <span class="token parameter variable">--version</span>
 rke version v1.4.6-rc1</code></pre></div>
-<h2>Step 4. Create SSH Key</h2>
-<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash">ssh-keygen <span class="token parameter variable">-t</span> rsa <span class="token parameter variable">-b</span> <span class="token number">4096</span></code></pre></div>
 <h1>Configuration RKE Cluster</h1>
 <h2>Step 1. Create cluster.yml</h2>
-<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash">rke config <span class="token parameter variable">--name</span> cluster.yml
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Cluster Level SSH Private Key Path <span class="token punctuation">[</span>~/.ssh/id_rsa<span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Number of Hosts <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> SSH Address of <span class="token function">host</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">[</span>none<span class="token punctuation">]</span>: <span class="token number">192.168</span>.144.12
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> SSH Port of <span class="token function">host</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token number">22</span><span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> SSH Private Key Path of <span class="token function">host</span> <span class="token punctuation">(</span><span class="token number">192.168</span>.144.12<span class="token punctuation">)</span> <span class="token punctuation">[</span>none<span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>-<span class="token punctuation">]</span> You have entered empty SSH key path, trying fetch from SSH key parameter
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> SSH Private Key of <span class="token function">host</span> <span class="token punctuation">(</span><span class="token number">192.168</span>.144.12<span class="token punctuation">)</span> <span class="token punctuation">[</span>none<span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>-<span class="token punctuation">]</span> You have entered empty SSH key, defaulting to cluster level SSH key: ~/.ssh/id_rsa
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> SSH User of <span class="token function">host</span> <span class="token punctuation">(</span><span class="token number">192.168</span>.144.12<span class="token punctuation">)</span> <span class="token punctuation">[</span>ubuntu<span class="token punctuation">]</span>: andy
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Is <span class="token function">host</span> <span class="token punctuation">(</span><span class="token number">192.168</span>.144.12<span class="token punctuation">)</span> a Control Plane <span class="token function">host</span> <span class="token punctuation">(</span>y/n<span class="token punctuation">)</span>? <span class="token punctuation">[</span>y<span class="token punctuation">]</span>: y
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Is <span class="token function">host</span> <span class="token punctuation">(</span><span class="token number">192.168</span>.144.12<span class="token punctuation">)</span> a Worker <span class="token function">host</span> <span class="token punctuation">(</span>y/n<span class="token punctuation">)</span>? <span class="token punctuation">[</span>n<span class="token punctuation">]</span>: y
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Is <span class="token function">host</span> <span class="token punctuation">(</span><span class="token number">192.168</span>.144.12<span class="token punctuation">)</span> an etcd <span class="token function">host</span> <span class="token punctuation">(</span>y/n<span class="token punctuation">)</span>? <span class="token punctuation">[</span>n<span class="token punctuation">]</span>: y
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Override Hostname of <span class="token function">host</span> <span class="token punctuation">(</span><span class="token number">192.168</span>.144.12<span class="token punctuation">)</span> <span class="token punctuation">[</span>none<span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Internal IP of <span class="token function">host</span> <span class="token punctuation">(</span><span class="token number">192.168</span>.144.12<span class="token punctuation">)</span> <span class="token punctuation">[</span>none<span class="token punctuation">]</span>: 
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Docker socket path on <span class="token function">host</span> <span class="token punctuation">(</span><span class="token number">192.168</span>.144.12<span class="token punctuation">)</span> <span class="token punctuation">[</span>/var/run/docker.sock<span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Network Plugin Type <span class="token punctuation">(</span>flannel, calico, weave, canal, aci<span class="token punctuation">)</span> <span class="token punctuation">[</span>canal<span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Authentication Strategy <span class="token punctuation">[</span>x509<span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Authorization Mode <span class="token punctuation">(</span>rbac, none<span class="token punctuation">)</span> <span class="token punctuation">[</span>rbac<span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Kubernetes Docker image <span class="token punctuation">[</span>rancher/hyperkube:v1.25.6-rancher4<span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Cluster domain <span class="token punctuation">[</span>cluster.local<span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Service Cluster IP Range <span class="token punctuation">[</span><span class="token number">10.43</span>.0.0/16<span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Enable PodSecurityPolicy <span class="token punctuation">[</span>n<span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Cluster Network CIDR <span class="token punctuation">[</span><span class="token number">10.42</span>.0.0/16<span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Cluster DNS Service IP <span class="token punctuation">[</span><span class="token number">10.43</span>.0.10<span class="token punctuation">]</span>:
-<span class="token punctuation">[</span>+<span class="token punctuation">]</span> Add addon manifest URLs or YAML files <span class="token punctuation">[</span>no<span class="token punctuation">]</span>:</code></pre></div>
-<h2>Step 2. Edit cluster.yml</h2>
 <p>在這邊大家會看到 nodes 裡面只有方才設定得 144.12 Worker，在這邊因為我們有 144.13，因此我們一樣畫葫蘆的將其建立上去，大致上如下</p>
 <div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash"><span class="token function">vi</span> cluster.yml
+nodes:
+- address: <span class="token string">"192.168.144.11"</span>
+  user: andy
+  role:
+  - controlplane
+  - etcd
 - address: <span class="token string">"192.168.144.12"</span>
-  port: <span class="token string">"22"</span>
-  role:
-  - controlplane
-  - worker
-  - etcd
   user: andy
-  docker_socket: /var/run/docker.sock
-  ssh_key: <span class="token string">""</span>
-  ssh_key_path: ~/.ssh/id_rsa
-  ssh_cert: <span class="token string">""</span>
-  ssh_cert_path: <span class="token string">""</span>
+  role:
+  - worker
 - address: <span class="token string">"192.168.144.13"</span>
-  port: <span class="token string">"22"</span>
-  role:
-  - controlplane
-  - worker
-  - etcd
   user: andy
-  docker_socket: /var/run/docker.sock
-  ssh_key: <span class="token string">""</span>
-  ssh_key_path: ~/.ssh/id_rsa
-  ssh_cert: <span class="token string">""</span>
-  ssh_cert_path: <span class="token string">""</span></code></pre></div>
+  role:
+  - worker</code></pre></div>
 <h1>Run RKE</h1>
 <p>當我們上述都完成後，即可用以下指令啟動 RKE</p>
 <div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash">rke up</code></pre></div>
@@ -119,12 +83,13 @@ INFO<span class="token punctuation">[</span>0116<span class="token punctuation">
 <span class="token function">cp</span> kube_config_cluster.yml ~/.kube/config</code></pre></div>
 <p>接下來就可以讓我們來測試一下 nodes 狀況</p>
 <div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash">kubectl get nodes
-NAME             STATUS   ROLES                      AGE   VERSION
-<span class="token number">192.168</span>.144.12   Ready    controlplane,etcd,worker   72m   v1.25.6
-<span class="token number">192.168</span>.144.13   Ready    controlplane,etcd,worker   72m   v1.25.6</code></pre></div>
+NAME             STATUS   ROLES               AGE   VERSION
+<span class="token number">192.168</span>.144.11   Ready    controlplane,etcd   72m   v1.25.6
+<span class="token number">192.168</span>.144.12   Ready    worker              72m   v1.25.6
+<span class="token number">192.168</span>.144.13   Ready    worker              72m   v1.25.6</code></pre></div>
 <h2>問題排除</h2>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">Failed to get job complete status for job rke-coredns-addon-deploy-job in namespace kube-system
-重新 rke up 即可正常</code></pre></div>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">Failed to get job complete status for job rke-coredns-addon-deploy-job in namespace kube-system</code></pre></div>
+<p>重新 rke up 即可正常</p>
 <h2>結論</h2>
 <p>在這次文章中，我們快速的了解 RKE 怎麼安裝，在過程中我們也可以發現 RKE 安裝的簡易，與傳統安裝 Kubeadm 還要相對的輕鬆，但我們是不是少了什麼? 都使用 RKE 了怎麼可以少了 Rancher GUI 呢? 下次文章就讓我們來看看 RKE 上如何安裝 Rancher。</p>
 <h2>參考</h2>
