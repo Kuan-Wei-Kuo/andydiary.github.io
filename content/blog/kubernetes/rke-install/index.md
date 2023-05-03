@@ -15,7 +15,7 @@ tags: ['Kubernetes', 'RKE']
 
 # 主機配置
 | HOST | IP | DESC |
-|------|----|------|
+|:------:|:----:|:------:|
 | rke-master-01 | 192.168.144.11 | Management Server |
 | rke-node-01 | 192.168.144.12 | Worker |
 | rke-node-02 | 192.168.144.13 | Worker |
@@ -25,6 +25,9 @@ tags: ['Kubernetes', 'RKE']
 
 也因此，在這邊的檢核點就是，可以使用 SSH 進行 docker ps 指令，如下顯示
 ```bash
+ssh 192.168.144.11 "docker ps "
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
 ssh 192.168.144.12 "docker ps "
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 
@@ -52,71 +55,26 @@ rke --version
 rke version v1.4.6-rc1
 ```
 
-## Step 4. Create SSH Key
-```bash
-ssh-keygen -t rsa -b 4096
-```
-
 # Configuration RKE Cluster
 
 ## Step 1. Create cluster.yml
-```bash
-rke config --name cluster.yml
-[+] Cluster Level SSH Private Key Path [~/.ssh/id_rsa]:
-[+] Number of Hosts [1]:
-[+] SSH Address of host (1) [none]: 192.168.144.12
-[+] SSH Port of host (1) [22]:
-[+] SSH Private Key Path of host (192.168.144.12) [none]:
-[-] You have entered empty SSH key path, trying fetch from SSH key parameter
-[+] SSH Private Key of host (192.168.144.12) [none]:
-[-] You have entered empty SSH key, defaulting to cluster level SSH key: ~/.ssh/id_rsa
-[+] SSH User of host (192.168.144.12) [ubuntu]: andy
-[+] Is host (192.168.144.12) a Control Plane host (y/n)? [y]: y
-[+] Is host (192.168.144.12) a Worker host (y/n)? [n]: y
-[+] Is host (192.168.144.12) an etcd host (y/n)? [n]: y
-[+] Override Hostname of host (192.168.144.12) [none]:
-[+] Internal IP of host (192.168.144.12) [none]: 
-[+] Docker socket path on host (192.168.144.12) [/var/run/docker.sock]:
-[+] Network Plugin Type (flannel, calico, weave, canal, aci) [canal]:
-[+] Authentication Strategy [x509]:
-[+] Authorization Mode (rbac, none) [rbac]:
-[+] Kubernetes Docker image [rancher/hyperkube:v1.25.6-rancher4]:
-[+] Cluster domain [cluster.local]:
-[+] Service Cluster IP Range [10.43.0.0/16]:
-[+] Enable PodSecurityPolicy [n]:
-[+] Cluster Network CIDR [10.42.0.0/16]:
-[+] Cluster DNS Service IP [10.43.0.10]:
-[+] Add addon manifest URLs or YAML files [no]:
-```
-
-## Step 2. Edit cluster.yml
 在這邊大家會看到 nodes 裡面只有方才設定得 144.12 Worker，在這邊因為我們有 144.13，因此我們一樣畫葫蘆的將其建立上去，大致上如下
 ```bash
 vi cluster.yml
+nodes:
+- address: "192.168.144.11"
+  user: andy
+  role:
+  - controlplane
+  - etcd
 - address: "192.168.144.12"
-  port: "22"
-  role:
-  - controlplane
-  - worker
-  - etcd
   user: andy
-  docker_socket: /var/run/docker.sock
-  ssh_key: ""
-  ssh_key_path: ~/.ssh/id_rsa
-  ssh_cert: ""
-  ssh_cert_path: ""
+  role:
+  - worker
 - address: "192.168.144.13"
-  port: "22"
-  role:
-  - controlplane
-  - worker
-  - etcd
   user: andy
-  docker_socket: /var/run/docker.sock
-  ssh_key: ""
-  ssh_key_path: ~/.ssh/id_rsa
-  ssh_cert: ""
-  ssh_cert_path: ""
+  role:
+  - worker
 ```
 
 # Run RKE
@@ -142,16 +100,17 @@ cp kube_config_cluster.yml ~/.kube/config
 接下來就可以讓我們來測試一下 nodes 狀況
 ```bash
 kubectl get nodes
-NAME             STATUS   ROLES                      AGE   VERSION
-192.168.144.12   Ready    controlplane,etcd,worker   72m   v1.25.6
-192.168.144.13   Ready    controlplane,etcd,worker   72m   v1.25.6
+NAME             STATUS   ROLES               AGE   VERSION
+192.168.144.11   Ready    controlplane,etcd   72m   v1.25.6
+192.168.144.12   Ready    worker              72m   v1.25.6
+192.168.144.13   Ready    worker              72m   v1.25.6
 ```
 
 ## 問題排除
 ```
 Failed to get job complete status for job rke-coredns-addon-deploy-job in namespace kube-system
-重新 rke up 即可正常
 ```
+重新 rke up 即可正常
 
 ## 結論
 在這次文章中，我們快速的了解 RKE 怎麼安裝，在過程中我們也可以發現 RKE 安裝的簡易，與傳統安裝 Kubeadm 還要相對的輕鬆，但我們是不是少了什麼? 都使用 RKE 了怎麼可以少了 Rancher GUI 呢? 下次文章就讓我們來看看 RKE 上如何安裝 Rancher。
