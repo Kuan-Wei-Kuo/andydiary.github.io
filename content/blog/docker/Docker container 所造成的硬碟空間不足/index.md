@@ -50,5 +50,5 @@ sudo sh -c 'truncate -s 0 /var/lib/docker/containers/*/*-json.log'
 之後請記得重新啟動 Docker，不要傻傻地以為這樣就好囉。
 
 ## 參考
-https://docs.docker.com/config/containers/logging/configure/
+https://docs.docker.com/config/containers/logging/configure/</br>
 https://stackoverflow.com/questions/41091634/how-to-clean-docker-container-logs
