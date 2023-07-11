@@ -5,10 +5,10 @@ tags: ['SpringBoot','Redis']
 ---
 
 ## 章節
-C1. SpringBoot 與 Redis 相遇
-C2. SpringBoot 與 Redis 相遇 - Jackson 序列化設定
-C3. SpringBoot 與 Redis 相遇 - 分散式鎖
-C4. SpringBoot 與 Redis 相遇 - 超賣情境
+CH1. SpringBoot 與 Redis 相遇<br>
+CH2. SpringBoot 與 Redis 相遇 - Jackson 序列化設定<br>
+CH3. SpringBoot 與 Redis 相遇 - 分散式鎖<br>
+CH4. SpringBoot 與 Redis 相遇 - 超賣情境
 
 ## 前言
 因為行動裝置的普及化，人手一支手機皆可上網進行網站操作，造就現代網站的流量日漸升高。在訪問次數如此平凡的情況下，對於資料庫造成莫大的負擔，為了解決這個問題，我們通常會採用 Cache 來讓我們加速訪問，減少資料庫的負擔，而最常見的 Cache Server 也就是我們常聽到的 Redis。
