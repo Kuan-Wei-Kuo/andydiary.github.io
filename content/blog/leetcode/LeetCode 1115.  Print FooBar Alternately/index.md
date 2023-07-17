@@ -1,5 +1,5 @@
 ---
-title: LeetCode 1115.  Print FooBar Alternately
+title: LeetCode 1115. Print FooBar Alternately
 date: "2023-02-03T23:00:00Z"
 tags: ['LeetCode']
 ---
