@@ -1,4 +1,70 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 11 Jul 2023 15:55:19 GMT</lastBuildDate><item><title><![CDATA[SpringBoot 與 Redis 相遇]]></title><description><![CDATA[章節 CH1. SpringBoot 與 Redis 相遇
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 17 Jul 2023 15:36:01 GMT</lastBuildDate><item><title><![CDATA[LeetCode 860. Lemonade Change]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/lemonade-change/ 題目描述 At a lemonade stand, each lemonade costs $5. 在一個檸檬水攤上，每一個檸檬水賣 $5。 Customers are…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 860. Lemonade Change/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 860. Lemonade Change/</guid><pubDate>Mon, 17 Jul 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://leetcode.com/problems/lemonade-change/&quot;&gt;https://leetcode.com/problems/lemonade-change/&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;題目描述&lt;/h2&gt;
+&lt;p&gt;At a lemonade stand, each lemonade costs $5.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在一個檸檬水攤上，每一個檸檬水賣 $5。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Customers are standing in a queue to buy from you and order one at a time (in the order specified by bills).&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;顧客們排隊跟你購買檸檬水，一次只購買一件(按照帳單的順序進行購買)。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Each customer will only buy one lemonade and pay with either a $5, $10, or $20 bill.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;所有顧客將會買一瓶檸檬水與使用 $5, $10, $20 面額的金額進行付款。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;You must provide the correct change to each customer so that the net transaction is that the customer pays $5.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;你必續提供正確的零錢給每位顧客。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Note that you do not have any change in hand at first.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;手頭上一開始並沒有任何零錢。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Given an integer array bills where bills[i] is the bill the ith customer pays, return true if you can provide every customer with the correct change, or false otherwise.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;給一個整數陣列帳單，其中 bills[i] 為顧客所支付的金額，如果你可以正確找零給每位顧客則回傳 true，反之 false。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;解題思路&lt;/h2&gt;
+&lt;p&gt;這題有點小陷阱，若按照字面上的意思，我們可以很快地寫出答案，畢竟每次都賺五塊，剩餘的就是要找回去，但我們這樣想就會落入陷阱。&lt;/p&gt;
+&lt;p&gt;在這題中，我們要記得鈔票的面額是不可更換的，10塊錢只能找5塊錢，20塊錢只能找一個10塊以及一個五塊又或者找三個五塊。&lt;/p&gt;
+&lt;h2&gt;程式碼&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Solution&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;lemonadeChange&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; bills&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; money5 &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; money10 &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; money20 &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; i &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; i &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt; bills&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;length &lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; i&lt;span class=&quot;token operator&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; bill &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; bills&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+      &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;bill &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        money5&lt;span class=&quot;token operator&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;bill &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        money10&lt;span class=&quot;token operator&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        money5&lt;span class=&quot;token operator&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;money10 &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+          money10&lt;span class=&quot;token operator&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+          money5&lt;span class=&quot;token operator&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+          money5 &lt;span class=&quot;token operator&quot;&gt;-=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+      &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;money5 &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;||&lt;/span&gt; money10 &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;||&lt;/span&gt; money20 &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Related Topics&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Array&lt;/code&gt;
+&lt;code class=&quot;language-text&quot;&gt;Greedy&lt;/code&gt;&lt;/p&gt;
+&lt;h2&gt;心得&lt;/h2&gt;
+&lt;p&gt;這題是真的滿簡單的，但一開始很習慣的增減金額來算，當然是悲劇滿滿，所以題目要看好看滿，Example 不要忘記仔細瞧瞧了。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[SpringBoot 與 Redis 相遇]]></title><description><![CDATA[章節 CH1. SpringBoot 與 Redis 相遇
 CH2. SpringBoot 與 Redis 相遇 - Jackson 序列化設定
 CH3. SpringBoot 與 Redis 相遇 - 分散式鎖
 CH4. SpringBoot 與 Redis…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/redis/redis-01/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/redis/redis-01/</guid><pubDate>Mon, 03 Jul 2023 23:50:00 GMT</pubDate><content:encoded>&lt;h2&gt;章節&lt;/h2&gt;
@@ -1583,7 +1649,7 @@ elastic/filebeat:7.17.9 &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/sp
 &lt;h2&gt;參考&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;https://www.javatpoint.com/stack-vs-heap-java&quot;&gt;https://www.javatpoint.com/stack-vs-heap-java&lt;/a&gt;&lt;br&gt;
 &lt;a href=&quot;https://www.baeldung.com/java-stack-heap&quot;&gt;https://www.baeldung.com/java-stack-heap&lt;/a&gt;&lt;br&gt;
-&lt;a href=&quot;https://stackify.com/java-heap-vs-stack/&quot;&gt;https://stackify.com/java-heap-vs-stack/&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[LeetCode 1115.  Print FooBar Alternately]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/print-foobar-alternately/ 題目描述 Suppose you are given the following code: 假設你有以下程式碼 The same instance of…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1115.  Print FooBar Alternately/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1115.  Print FooBar Alternately/</guid><pubDate>Fri, 03 Feb 2023 23:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
+&lt;a href=&quot;https://stackify.com/java-heap-vs-stack/&quot;&gt;https://stackify.com/java-heap-vs-stack/&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[LeetCode 1115. Print FooBar Alternately]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/print-foobar-alternately/ 題目描述 Suppose you are given the following code: 假設你有以下程式碼 The same instance of…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1115.  Print FooBar Alternately/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1115.  Print FooBar Alternately/</guid><pubDate>Fri, 03 Feb 2023 23:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;https://leetcode.com/problems/print-foobar-alternately/&quot;&gt;https://leetcode.com/problems/print-foobar-alternately/&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;題目描述&lt;/h2&gt;
 &lt;p&gt;Suppose you are given the following code:&lt;/p&gt;
