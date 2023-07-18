@@ -52,14 +52,14 @@
   --fontSize-5: 2.074rem;
   --fontSize-6: 2.488rem;
   --fontSize-7: 2.986rem;
-  --color-primary: #1E88E5;
+  --color-primary: #40a9ff;
   --color-white: #ffffff;
   --color-border: #BDBDBD;
   --color-text: #BDBDBD;
   --color-text-light: #4f5969;
   --color-accent: #d1dce5;
-  --color-bg-primary: #000;
-  --color-bg-secondary: #212121;
+  --color-bg-primary: rgb(25, 28, 32);
+  --color-bg-secondary: #111216;
 }
 
 /* HTML elements */
@@ -257,7 +257,7 @@ a:focus {
   background: var(--color-white);
   padding: var(--spacing-0) var(--spacing-4);
   border-bottom: .025rem solid var(--color-border);
-  background: var(--color-bg-primary);
+  background: var(--color-bg-secondary);
 }
 
 .global-header-spacing {
@@ -273,10 +273,12 @@ a:focus {
   flex: 1 1;
   margin: 0 auto;
   max-width: var(--maxWidth-wrapper);
+  min-height: 100vh;
   padding-top: 48px;
   padding-left: var(--spacing-8);
   padding-right: var(--spacing-8);
   background: var(--color-bg-secondary);
+  overflow: hidden;
 }
 
 .global-footer {
@@ -287,6 +289,7 @@ a:focus {
 
 .heading-link {
   font-family: var(--font-heading);
+  font-weight: var(--fontWeight-bold);
   text-decoration: none;
   font-size: var(--fontSize-3);
   color: var(--color-primary);
@@ -303,14 +306,14 @@ a:focus {
 }
 
 .post-list-item h2 {
-  font-size: var(--fontSize-4);
+  font-size: var(--fontSize-3);
   color: var(--color-primary);
-  margin-bottom: var(--spacing-2);
+  margin-bottom: var(--spacing-0);
   margin-top: var(--spacing-0);
 }
 
 .post-list-item header {
-  margin-bottom: var(--spacing-4);
+  margin-bottom: var(--spacing-2);
 }
 
 .bio {
@@ -329,8 +332,37 @@ a:focus {
   border-radius: 100%;
 }
 
+.blog-post-list ul li, .blog-post-list ol li {
+  padding-left: var(--spacing-0);
+  margin-bottom: calc(var(--spacing-32) / 2);
+}
+
+.blog-tag ul li, .blog-tag ol li {
+  padding-left: var(--spacing-0);
+  margin-bottom: calc(var(--spacing-8) / 2);
+}
+
 .blog-post header h1 {
   margin: var(--spacing-0) var(--spacing-0) var(--spacing-4) var(--spacing-0);
+}
+
+.blog-post h1 {
+  font-weight: var(--fontWeight-black);
+  font-size: var(--fontSize-4);
+}
+
+.blog-post h2 {
+  font-weight: var(--fontWeight-black);
+  font-size: var(--fontSize-3);
+  margin-top: var(--spacing-12);
+  margin-bottom: var(--spacing-2);
+  line-height: var(--lineHeight-tight);
+  letter-spacing: -0.025em;
+}
+
+.blog-post p {
+  margin: var(--spacing-0) var(--spacing-0) var(--spacing-4) var(--spacing-0);
+  padding: var(--spacing-0);
 }
 
 .blog-post header p {

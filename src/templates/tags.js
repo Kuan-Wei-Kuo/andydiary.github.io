@@ -19,7 +19,7 @@ const Tags = ({ pageContext, data, location }) => {
   return (
     <Layout location={location} title={siteTitle}>
       <article
-        className="blog-post"
+        className="blog-tag"
         itemScope
         itemType="http://schema.org/Article"
       >
