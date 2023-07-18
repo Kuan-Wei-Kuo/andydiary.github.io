@@ -1,5 +1,5 @@
 ---
-title: LeetCode 1179. Find Nearest Point That Has the Same X or Y Coordinate
+title: LeetCode 1779. Find Nearest Point That Has the Same X or Y Coordinate
 date: "2023-07-18T00:00:00Z"
 tags: ['LeetCode']
 ---
