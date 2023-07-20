@@ -1,4 +1,94 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 19 Jul 2023 15:29:38 GMT</lastBuildDate><item><title><![CDATA[LeetCode 1800. Maximum Ascending Subarray Sum]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/maximum-ascending-subarray-sum 題目描述 Given an array of positive integers nums, return the maximum possible…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1800. Maximum Ascending Subarray Sum/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1800. Maximum Ascending Subarray Sum/</guid><pubDate>Wed, 19 Jul 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 20 Jul 2023 16:45:54 GMT</lastBuildDate><item><title><![CDATA[LeetCode 2091. Removing Minimum and Maximum From Array]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/removing-minimum-and-maximum-from-array 題目描述 You are given a 0-indexed array of distinct integers nums…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 2091. Removing Minimum and Maximum From Array/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 2091. Removing Minimum and Maximum From Array/</guid><pubDate>Thu, 20 Jul 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://leetcode.com/problems/removing-minimum-and-maximum-from-array&quot;&gt;https://leetcode.com/problems/removing-minimum-and-maximum-from-array&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;題目描述&lt;/h2&gt;
+&lt;p&gt;You are given a 0-indexed array of distinct integers nums.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;你會取得一個不重複的整數陣列。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;There is an element in nums that has the lowest value and an element that has the highest value. We call them the minimum and maximum respectively. Your goal is to remove both these elements from the array.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;該陣列中會有最小與最大值，我們稱之為 minimum 與 maximum。你的目標是從陣列刪除他們。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;A deletion is defined as either removing an element from the front of the array or removing an element from the back of the array.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;刪除的定義為從前面或後面刪除一個數。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Return the minimum number of deletions it would take to remove both the minimum and maximum element from the array.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;回傳刪除最大與最小值的最小刪除次數。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;解題思路&lt;/h2&gt;
+&lt;p&gt;題目中很明確地告訴我們要刪除最大與最小值，而刪除的定義就是往前或往後刪除。&lt;/p&gt;
+&lt;p&gt;假設陣列為 [2,10,7,5,4,1,8,6]，最大值為10、最小值為1，若今天我們要刪除他們，有三個情境:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;由前往後刪，需要刪除6次&lt;/li&gt;
+&lt;li&gt;由後往前刪，需要刪除7次&lt;/li&gt;
+&lt;li&gt;由前往後與由後往前，各刪除至第一個值，共刪除5次&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;解析到這邊，我們也可以知道，我們情境就這三種，那麼只要依序將這三個情境計算出來就可以了。&lt;/p&gt;
+&lt;h2&gt;程式碼&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Solution&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;minimumDeletions&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; nums&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; n &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; nums&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;length&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; minIdx &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; maxIdx &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; ans &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;n &lt;span class=&quot;token operator&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; n&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; i &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; i &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt; n &lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; i&lt;span class=&quot;token operator&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;nums&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;minIdx&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; nums&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+                minIdx &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; i&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;nums&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;maxIdx&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt; nums&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+                maxIdx &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; i&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;token comment&quot;&gt;// 最小 index&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; front &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;minIdx&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; maxIdx&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;token comment&quot;&gt;// 最大 index&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; back &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;minIdx&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; maxIdx&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;token comment&quot;&gt;// 由前往後第一個值&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; mftr &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; front &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;token comment&quot;&gt;// 由後往前第一個值&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; mbtr &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; n &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt; back&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;token comment&quot;&gt;// 由前往後&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; ftr &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; back &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;token comment&quot;&gt;// 由後往前&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; btr &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; n &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt; front&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;token comment&quot;&gt;// 由前往後與由後往前的和&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; mtr &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; mftr &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; mbtr&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+        ans &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; ftr&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;ans &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; btr&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            ans &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; btr&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; 
+        
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;ans &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; mtr&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            ans &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; mtr&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; ans&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Related Topics&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Array&lt;/code&gt;
+&lt;code class=&quot;language-text&quot;&gt;Greedy&lt;/code&gt;&lt;/p&gt;
+&lt;h2&gt;心得&lt;/h2&gt;
+&lt;p&gt;這題困難度並不算太困難，只要我們能夠釐清題目的三種情境，應該都很快可以算出來。最困難的大概是窮舉之後的優化，這題的優化很簡單，我們應該要盡量減少 for 迴圈數量，也因為題目的特性，我們其實只需要知道 index 就好，至於最大最小的數值為何，並不重要。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[LeetCode 1800. Maximum Ascending Subarray Sum]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/maximum-ascending-subarray-sum 題目描述 Given an array of positive integers nums, return the maximum possible…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1800. Maximum Ascending Subarray Sum/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1800. Maximum Ascending Subarray Sum/</guid><pubDate>Wed, 19 Jul 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;https://leetcode.com/problems/maximum-ascending-subarray-sum&quot;&gt;https://leetcode.com/problems/maximum-ascending-subarray-sum&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;題目描述&lt;/h2&gt;
 &lt;p&gt;Given an array of positive integers nums, return the maximum possible sum of an ascending subarray in nums.&lt;/p&gt;
