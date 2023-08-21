@@ -1,81 +1,41 @@
 ---
-title: SpringBoot 與 Redis 相遇
-date: "2023-07-03T23:50:00Z"
-tags: ['SpringBoot','Redis']
+title: 使用 Redis 將計數每天重置
+date: "2023-08-21T23:00:00Z"
+tags: ['Redis']
 ---
 
-## 章節
-CH1. SpringBoot 與 Redis 相遇<br>
-CH2. SpringBoot 與 Redis 相遇 - Jackson 序列化設定<br>
-CH3. SpringBoot 與 Redis 相遇 - 分散式鎖<br>
-CH4. SpringBoot 與 Redis 相遇 - 超賣情境
+## Introduction
+最近開發到一個需求，每次建立資料都會使用[日期]+[流水號]來進行編號，其中流水號每天都會進行刷新。想到這種需求，大家第一眼可能會想將流水號建立在資料庫，但安迪想偷懶，利用 Redis 的 incr、expire 功能來達成目標。
 
-## 前言
-因為行動裝置的普及化，人手一支手機皆可上網進行網站操作，造就現代網站的流量日漸升高。在訪問次數如此平凡的情況下，對於資料庫造成莫大的負擔，為了解決這個問題，我們通常會採用 Cache 來讓我們加速訪問，減少資料庫的負擔，而最常見的 Cache Server 也就是我們常聽到的 Redis。
-
-本文將會簡單地介紹 Redis 以及如何與 SpringBoot 3 進行整合。
-
-## What is Redis
-Redis 是一套開源且高性能的資料庫系統，資料通常存放於記憶體中，也提供持久化機制。而 Redis 主要使用 Kev-Value 資料結構來進行資料儲存，所以我們也可以說它是一種 NoSQL。
-
-## Maven dependencies
-```xml
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-data-redis</artifactId>
-</dependency>
-<dependency>
-    <groupId>org.apache.commons</groupId>
-    <artifactId>commons-pool2</artifactId>
-</dependency>
-```
-
-在這邊可以注意一下，我們除了引用 spring-boot-starter-data-redis 也一併使用了 commons-pool，原因在於接下來我們的設定有使用到 pool。
-
-除了上述以外，大家可以看到我們並沒有使用到 jedis，因為目前 SpringDataRedis 預設是使用 lettuce 作為預設使用的 library。
-
-## Yaml Configuration
-```yaml
-spring:
-  application:
-    name: redis-example
-  data:
-    redis:
-      host: 192.168.145.10
-      port: 6379
-      database: 0
-      timeout: 1000
-      lettuce:
-        pool:
-          min-idle: 0
-          max-idle: 150
-          max-wait: -1
-          max-active: 150
-```
-
-在這邊我們簡單的介紹 pool 做了那些設定。
-
-* min-idle: Connection Pool 最小的空閒連接數，只有在正數時有效。
-* max-idle: Connection Pool 最大空閒連接數，若為負數代表不設限。
-* max-wait: 當 Connection Pool 數量不足時，會有一個等待時間，若超出這個時間將會拋出錯誤，若為負數則不設限。
-* max-active: Connection Pool 最大能夠分配的數量，若為負數則不設限。
-
-## Test
+## Code
 ```java
-@Autowired
-private RedisTemplate<String, String> redisTemplate;
+public Long incr(String key, Long expireSeconds) {
+  Long sequence = redisTemplate.opsForValue().increment(key, 1);
+  
+  if (sequence != null && sequence == 1) {
+    redisTemplate.expire(key, expireSeconds, TimeUnit.SECONDS);
+  }
 
-@Test
-public void testRedisSet() {
-    // 嘗試設定一個 Key 為 Hello，Value 為 World 的資料
-    redisTemplate.opsForValue().set("Hello", "World");
+  return sequence;
+} 
 
-    // 嘗試取得 Key 為 Hello 的資料，並驗證其 Value 是否為 World
-    assertEquals(redisTemplate.opsForValue().get("Hello"), "World");
+public Long getExpireSeconds() {
+  Calendar calendar = Calendar.getInstance();
+  calendar.add(Calendar.DAY_OF_MONTH, 1);
+  calendar.set(Calendar.HOUR_OF_DAY, 0);
+  calendar.set(Calendar.MINUTE, 0);
+  calendar.set(Calendar.SECOND, 0);
+  calendar.set(Calendar.MILLISECOND, 0);
+  return (calendar.getTimeInMillis() - System.currentTimeMillis()) / 1000L;
 }
 ```
+稍微解釋一下程式碼，當呼叫 incr 方法時，我們會使用一組 Key 與 Redis 通知，若查無 Key 則將會返回 1 並且建立 Key，反之則將返回新增後的值。
 
-在預設下，我們可以使用 RedisTemplate 來進行測試，主要動作為設定一個 Key 為 Hello，Value 為 World 的資料，並且測試其數值是否正確。
+當返回值後，我們就可以開始判斷，若 sequence 等於 1 的時候，也代表這筆 Key 是第一次建立，那我們將會設定其過期時間。
+
+也許有眼尖的夥伴會說，為何不先判斷 Redis 是否有 Key 在來進行初始化呢? 當然可以，但是動作將會拆成兩步驟，若今天系統為併發系統，那麼這個方式並不能保證原子性，這也是為何安迪選擇使用 Redis 來實作該功能，因為 Redis 的 incr 功能是原子性的，利用 incr、expire 兩種功能，我們就能快速地達到要求，這也算是安迪偷懶了一下。
 
 ## 結論
-至此我們簡單地完成了 Redis 與 SpringBoot 的整合，並且嘗試的操作，後面幾篇文章我們將會更加進一步的了解 Redis。
+這次安迪簡單的分享這個方式，我相信有更多好的方式，但在目前專案的緊急階段，我選擇了可以讓我相對安全的快速交付功能。
+
+也許這麼說會得罪一些人，但我認為有時候工程師也需要停止爛漫，在工作中選擇當下最適合的解法即可，後續我們可以在使用私底下時間進行分析與研究，這是相對安全的方式，企業獲利與個人成長有時候是非常衝突的。
