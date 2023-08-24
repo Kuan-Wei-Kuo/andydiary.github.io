@@ -1,4 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 23 Aug 2023 16:18:00 GMT</lastBuildDate><item><title><![CDATA[前後端分離攜帶 Cookie 的跨域問題]]></title><description><![CDATA[Introduction 近期在某專案遇見前後端分離攜帶 Cookie 的跨域問題，剛好有一些小心得想要分享一下。 Solution 在前端中我們很常使用 Axios 來請求 API，在默認的情況下 Axios 是不會攜帶 Cookie 的，我們要將 Axios…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/前後端分離攜帶 Cookie 的跨域問題/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/前後端分離攜帶 Cookie 的跨域問題/</guid><pubDate>Thu, 24 Aug 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 24 Aug 2023 16:11:15 GMT</lastBuildDate><item><title><![CDATA[SpringBootTest 如何跳過 @Configuration]]></title><description><![CDATA[Introduction 最近在撰寫整合測試時，在思考有沒有辦法加快整合測試的速度，當然首當其衝的就是，當某些測試不需要 Redis、MQ 連線時，全部略過啟用，可是查了許多資料，安迪我真的找不到一個簡單的方式，接下來就讓我分享一下我是如何跳過 @Configuration…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/SpringBootTest 如何跳過 @Configuration/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/SpringBootTest 如何跳過 @Configuration/</guid><pubDate>Fri, 25 Aug 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;最近在撰寫整合測試時，在思考有沒有辦法加快整合測試的速度，當然首當其衝的就是，當某些測試不需要 Redis、MQ 連線時，全部略過啟用，可是查了許多資料，安迪我真的找不到一個簡單的方式，接下來就讓我分享一下我是如何跳過 @Configuration 的自動載入。&lt;/p&gt;
+&lt;h2&gt;Solution&lt;/h2&gt;
+&lt;p&gt;今天我們有一個 MyService 服務要進行測試，但在 SpringBootTest 的情況下，會自動載入相關 @Configuration，如果安迪不想讓 MQTT 在測試時也嘗試連線，我們應該如何使用。&lt;/p&gt;
+&lt;p&gt;首先我們需要建立一個 TestMqttConfiguraion&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token annotation punctuation&quot;&gt;@TestConfiguration&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;TestMqttConfiguration&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;token annotation punctuation&quot;&gt;@MockBean&lt;/span&gt;
+    &lt;span class=&quot;token class-name&quot;&gt;MessageProducer&lt;/span&gt; inbound&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;上述實際用途就是相 MQTT 中的啟動入口利用 @MockBean 覆蓋，讓其略過啟動。&lt;/p&gt;
+&lt;p&gt;接下來我們可以看看 MyService 應該如何撰寫。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token annotation punctuation&quot;&gt;@SpringBootTest&lt;/span&gt;
+&lt;span class=&quot;token annotation punctuation&quot;&gt;@AutoConfigureTestDatabase&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;connection &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;EmbeddedDatabaseConnection&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;H2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token annotation punctuation&quot;&gt;@Import&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;TestMqttConfiguration&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;MyServiceTests&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;token comment&quot;&gt;// do something...&lt;/span&gt;
+
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;這邊可以看到我們 Import 剛剛建立的 TestMqttConfiguration，其實今天將 TestMqttConfiguration 內的 MessageProducer 放到這邊進行 @MockBean 也是行得通，概念上是一樣的，只是我們專門建立一個 Class 可以讓後續其他也需要略過啟動的測試可以一起使用。&lt;/p&gt;
+&lt;h2&gt;Review&lt;/h2&gt;
+&lt;p&gt;目前這個方法網路上有不少的答案，但有時候並沒有說明清除，其根本思路就是利用 @MockBean 方式來跳過某些 @Configuraion 所需要的 Bean 以此來達到不啟用的動作。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[前後端分離攜帶 Cookie 的跨域問題]]></title><description><![CDATA[Introduction 近期在某專案遇見前後端分離攜帶 Cookie 的跨域問題，剛好有一些小心得想要分享一下。 Solution 在前端中我們很常使用 Axios 來請求 API，在默認的情況下 Axios 是不會攜帶 Cookie 的，我們要將 Axios…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/前後端分離攜帶 Cookie 的跨域問題/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/前後端分離攜帶 Cookie 的跨域問題/</guid><pubDate>Thu, 24 Aug 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;近期在某專案遇見前後端分離攜帶 Cookie 的跨域問題，剛好有一些小心得想要分享一下。&lt;/p&gt;
 &lt;h2&gt;Solution&lt;/h2&gt;
 &lt;p&gt;在前端中我們很常使用 Axios 來請求 API，在默認的情況下 Axios 是不會攜帶 Cookie 的，我們要將 Axios 中的 withCredentials 設為 True 才可以正常攜帶 Cookie。&lt;/p&gt;
@@ -127,41 +151,7 @@
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Array&lt;/code&gt;
 &lt;code class=&quot;language-text&quot;&gt;Greedy&lt;/code&gt;&lt;/p&gt;
 &lt;h2&gt;心得&lt;/h2&gt;
-&lt;p&gt;這題困難度並不算太困難，只要我們能夠釐清題目的三種情境，應該都很快可以算出來。最困難的大概是窮舉之後的優化，這題的優化很簡單，我們應該要盡量減少 for 迴圈數量，也因為題目的特性，我們其實只需要知道 index 就好，至於最大最小的數值為何，並不重要。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[LeetCode 2413. Smallest Even Multiple]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/smallest-even-multiple 題目描述 Given a positive integer n, return the smallest positive integer that is a…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 2413. Smallest Even Multiple/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 2413. Smallest Even Multiple/</guid><pubDate>Wed, 19 Jul 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;https://leetcode.com/problems/smallest-even-multiple&quot;&gt;https://leetcode.com/problems/smallest-even-multiple&lt;/a&gt;&lt;/p&gt;
-&lt;h2&gt;題目描述&lt;/h2&gt;
-&lt;p&gt;Given a positive integer n, return the smallest positive integer that is a multiple of both 2 and n.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;取得一個正整數 n，回傳與 n 與 2 的最小公倍數。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2&gt;解題思路&lt;/h2&gt;
-&lt;p&gt;這題就很簡單，只要你記得最小公倍數、最大公約數算法就可以解答出來。&lt;/p&gt;
-&lt;h3&gt;最大公約數&lt;/h3&gt;
-&lt;p&gt;因此來看這題，通常與 2 的最小公倍數不是 2 就是 1 可以對他進行整除，這就是最大公約數。那我們在來思考一下何種情況 2 的最大公約數會是 1 或者 2 呢?&lt;/p&gt;
-&lt;p&gt;其實也很簡單，就是是否能被 2 整除，如果為奇數最大公約數則是 1 反之則為 2。&lt;/p&gt;
-&lt;h3&gt;最小公倍數&lt;/h3&gt;
-&lt;p&gt;接下來我們就可以套公式，兩數之間的最小公倍數為&lt;/p&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;(num1 * num2) / 最大公約數&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;對此題來說應該會是&lt;/p&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;(2 * n) / 最大公約數&lt;/code&gt;&lt;/p&gt;
-&lt;h2&gt;程式碼&lt;/h2&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Solution&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;smallestEvenMultiple&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; n&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; gcd &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;n &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-            gcd &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;n &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt; gcd&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2&gt;Related Topics&lt;/h2&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Math&lt;/code&gt;
-&lt;code class=&quot;language-text&quot;&gt;Number Theory&lt;/code&gt;&lt;/p&gt;
-&lt;h2&gt;心得&lt;/h2&gt;
-&lt;p&gt;我很討厭數學題，很多時候不清楚公式或者概念，基本上就會解答不出來。比如這題就是如此，我一時之間是忘記這兩個概念是什麼，畢竟平常工作很少使用到。&lt;/p&gt;
-&lt;p&gt;這種題目刷與不刷，似乎在一個奇妙的界線，可惜這是遊戲規則，還是多少看一下吧!&lt;/p&gt;</content:encoded></item><item><title><![CDATA[LeetCode 1800. Maximum Ascending Subarray Sum]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/maximum-ascending-subarray-sum 題目描述 Given an array of positive integers nums, return the maximum possible…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1800. Maximum Ascending Subarray Sum/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1800. Maximum Ascending Subarray Sum/</guid><pubDate>Wed, 19 Jul 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
+&lt;p&gt;這題困難度並不算太困難，只要我們能夠釐清題目的三種情境，應該都很快可以算出來。最困難的大概是窮舉之後的優化，這題的優化很簡單，我們應該要盡量減少 for 迴圈數量，也因為題目的特性，我們其實只需要知道 index 就好，至於最大最小的數值為何，並不重要。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[LeetCode 1800. Maximum Ascending Subarray Sum]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/maximum-ascending-subarray-sum 題目描述 Given an array of positive integers nums, return the maximum possible…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1800. Maximum Ascending Subarray Sum/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1800. Maximum Ascending Subarray Sum/</guid><pubDate>Wed, 19 Jul 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;https://leetcode.com/problems/maximum-ascending-subarray-sum&quot;&gt;https://leetcode.com/problems/maximum-ascending-subarray-sum&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;題目描述&lt;/h2&gt;
 &lt;p&gt;Given an array of positive integers nums, return the maximum possible sum of an ascending subarray in nums.&lt;/p&gt;
@@ -208,7 +198,41 @@
 &lt;h2&gt;Related Topics&lt;/h2&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Array&lt;/code&gt;&lt;/p&gt;
 &lt;h2&gt;心得&lt;/h2&gt;
-&lt;p&gt;這題困難度不高，也沒什麼好說的了。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[LeetCode 1779. Find Nearest Point That Has the Same X or Y Coordinate]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/find-nearest-point-that-has-the-same-x-or-y-coordinate 題目描述 You are given two integers, x and y, which…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1779. Find Nearest Point That Has the Same X or Y Coordinate/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1779. Find Nearest Point That Has the Same X or Y Coordinate/</guid><pubDate>Tue, 18 Jul 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
+&lt;p&gt;這題困難度不高，也沒什麼好說的了。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[LeetCode 2413. Smallest Even Multiple]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/smallest-even-multiple 題目描述 Given a positive integer n, return the smallest positive integer that is a…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 2413. Smallest Even Multiple/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 2413. Smallest Even Multiple/</guid><pubDate>Wed, 19 Jul 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://leetcode.com/problems/smallest-even-multiple&quot;&gt;https://leetcode.com/problems/smallest-even-multiple&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;題目描述&lt;/h2&gt;
+&lt;p&gt;Given a positive integer n, return the smallest positive integer that is a multiple of both 2 and n.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;取得一個正整數 n，回傳與 n 與 2 的最小公倍數。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;解題思路&lt;/h2&gt;
+&lt;p&gt;這題就很簡單，只要你記得最小公倍數、最大公約數算法就可以解答出來。&lt;/p&gt;
+&lt;h3&gt;最大公約數&lt;/h3&gt;
+&lt;p&gt;因此來看這題，通常與 2 的最小公倍數不是 2 就是 1 可以對他進行整除，這就是最大公約數。那我們在來思考一下何種情況 2 的最大公約數會是 1 或者 2 呢?&lt;/p&gt;
+&lt;p&gt;其實也很簡單，就是是否能被 2 整除，如果為奇數最大公約數則是 1 反之則為 2。&lt;/p&gt;
+&lt;h3&gt;最小公倍數&lt;/h3&gt;
+&lt;p&gt;接下來我們就可以套公式，兩數之間的最小公倍數為&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;(num1 * num2) / 最大公約數&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;對此題來說應該會是&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;(2 * n) / 最大公約數&lt;/code&gt;&lt;/p&gt;
+&lt;h2&gt;程式碼&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Solution&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;smallestEvenMultiple&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; n&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; gcd &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;n &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            gcd &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;n &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt; gcd&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Related Topics&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Math&lt;/code&gt;
+&lt;code class=&quot;language-text&quot;&gt;Number Theory&lt;/code&gt;&lt;/p&gt;
+&lt;h2&gt;心得&lt;/h2&gt;
+&lt;p&gt;我很討厭數學題，很多時候不清楚公式或者概念，基本上就會解答不出來。比如這題就是如此，我一時之間是忘記這兩個概念是什麼，畢竟平常工作很少使用到。&lt;/p&gt;
+&lt;p&gt;這種題目刷與不刷，似乎在一個奇妙的界線，可惜這是遊戲規則，還是多少看一下吧!&lt;/p&gt;</content:encoded></item><item><title><![CDATA[LeetCode 1779. Find Nearest Point That Has the Same X or Y Coordinate]]></title><description><![CDATA[題目位置 https://leetcode.com/problems/find-nearest-point-that-has-the-same-x-or-y-coordinate 題目描述 You are given two integers, x and y, which…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1779. Find Nearest Point That Has the Same X or Y Coordinate/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/leetcode/LeetCode 1779. Find Nearest Point That Has the Same X or Y Coordinate/</guid><pubDate>Tue, 18 Jul 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;題目位置&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;https://leetcode.com/problems/find-nearest-point-that-has-the-same-x-or-y-coordinate&quot;&gt;https://leetcode.com/problems/find-nearest-point-that-has-the-same-x-or-y-coordinate&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;題目描述&lt;/h2&gt;
 &lt;p&gt;You are given two integers, x and y, which represent your current location on a Cartesian grid: (x, y). You are also given an array points where each points[i] = [ai, bi] represents that a point exists at (ai, bi). A point is valid if it shares the same x-coordinate or the same y-coordinate as your location.&lt;/p&gt;
