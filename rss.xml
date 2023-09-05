@@ -1,4 +1,83 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 24 Aug 2023 16:11:15 GMT</lastBuildDate><item><title><![CDATA[SpringBootTest 如何跳過 @Configuration]]></title><description><![CDATA[Introduction 最近在撰寫整合測試時，在思考有沒有辦法加快整合測試的速度，當然首當其衝的就是，當某些測試不需要 Redis、MQ 連線時，全部略過啟用，可是查了許多資料，安迪我真的找不到一個簡單的方式，接下來就讓我分享一下我是如何跳過 @Configuration…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/SpringBootTest 如何跳過 @Configuration/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/SpringBootTest 如何跳過 @Configuration/</guid><pubDate>Fri, 25 Aug 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 05 Sep 2023 15:00:32 GMT</lastBuildDate><item><title><![CDATA[淺談負載均衡 Webscoket 消息共享問題]]></title><description><![CDATA[前提 現代系統搭配負載均衡的服務越來越多，如果服務需要搭配 Websocket 功能，每個服務訂閱的真實位置可能都不同，那麼我們如何共享服務的消息。 解決思路 假設我們今天有一個廣告服務，廣告成立後要使用 Websocket 通知各個 Client…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/淺談負載均衡 Webscoket 消息共享問題/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/淺談負載均衡 Webscoket 消息共享問題/</guid><pubDate>Tue, 05 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;前提&lt;/h2&gt;
+&lt;p&gt;現代系統搭配負載均衡的服務越來越多，如果服務需要搭配 Websocket 功能，每個服務訂閱的真實位置可能都不同，那麼我們如何共享服務的消息。&lt;/p&gt;
+&lt;h2&gt;解決思路&lt;/h2&gt;
+&lt;p&gt;假設我們今天有一個廣告服務，廣告成立後要使用 Websocket 通知各個 Client 端，而廣告服務又被 Replicas 多個。按照上述場景，我們是無法得知 Client 訂閱了哪一個服務，除非我們後端成功建立常連接後進行 IP、Session 的緩存，才能夠得知 Client 真實訂閱哪個服務。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;廣播群體使用者&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;整體來說我們可將所有要廣播的消息丟到 MQ 裡，這時候我們可以選擇 Client 是否直接要訂閱 MQ，又或者想將 MQ 隱藏起來，由服務在接收一次 MQ 資料，進行 Websocket 廣播，流程圖如下。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 630px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/57ac0faedf96fcf0bb8ba84fbc92b247/5205c/Websocket%E5%85%B1%E4%BA%AB.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 32.911392405063296%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAHCAYAAAAIy204AAAACXBIWXMAAAsTAAALEwEAmpwYAAABMklEQVR42m2R6UoDQRCE9/1fy/tCEPwTUIOJJtnZY+7sXPtJJoqKFhQ9MNXdVHUzc8RX/Yl5/mR9/6c4Yh8K6z4ymETz3QlO7wkhEGMk5/x78qHRTMheoY1Ga42UkpQCoyvcLwNPu0DTXV1g7u8wb2vazYBoBUIIlDJkt8JsL/HimuRekYNBjQrnHNZatDZYo2lHz2IHr32mCZ0g9R157/9YKcmSJ0GZOlLUdLuRzXqLEC1t29bBKQY6NXH6sGHxZmgohTln5jIjO103H4QH68f0Csz5O+V/olS+cLsYed7uadqzE9TNFWa1Yhg0cpQ1G2M9yS7Rm1Pc9pxgXtDK13+lVKX3nhgmOhV4fJ9ZikSTrSU7S4nx75VLqLYPhIiVnrFXWGerk5RS1U2x8D4kRpv5AN8jHP6K76s4AAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;Websocket共享&quot;
+        title=&quot;&quot;
+        src=&quot;/static/57ac0faedf96fcf0bb8ba84fbc92b247/f058b/Websocket%E5%85%B1%E4%BA%AB.png&quot;
+        srcset=&quot;/static/57ac0faedf96fcf0bb8ba84fbc92b247/c26ae/Websocket%E5%85%B1%E4%BA%AB.png 158w,
+/static/57ac0faedf96fcf0bb8ba84fbc92b247/6bdcf/Websocket%E5%85%B1%E4%BA%AB.png 315w,
+/static/57ac0faedf96fcf0bb8ba84fbc92b247/f058b/Websocket%E5%85%B1%E4%BA%AB.png 630w,
+/static/57ac0faedf96fcf0bb8ba84fbc92b247/5205c/Websocket%E5%85%B1%E4%BA%AB.png 833w&quot;
+        sizes=&quot;(max-width: 630px) 100vw, 630px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;廣播個別使用者&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;思路大體上是一樣的，只是這時候我們需要儲存同個 User 不同裝置的 Session ID，並且利用 Spring websocket 中的 setUserDestinationPrefix、convertAndSendToUser 來幫助我們廣播到個別使用者身上。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 630px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/16d6b8bb8891327558dce0bf89f94079/5205c/Websocket%E5%85%B1%E4%BA%AB_%E5%96%AE%E9%BB%9E.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 47.46835443037975%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAAAsTAAALEwEAmpwYAAABkElEQVR42m2RzW7UMBSF89C8BBJvgIQQO1ixYUE3VLCoqmoY0aLSv1Epk5nMdJJxYsdJHPv6Q5OWgjIc6Sx8fXzuvcdJDIHoPTF4xAdMaWnblqZpCLs78Yg4YvQEL5S5xtSGurYYY+h7h+2E66znvvIkbv6L7ckxZjrBZBn5pkQphVIljTVgZrj7MzA31FpTbBRa64FlVWFMxaqwnM4988KTSNsSjB64m3SMeT7lPD3gcnFIbQzrRU5RFAN3W0QJbE3P+cKzVJ5kbBBjHChRhvPBxRteHj3j7fQ5LrRPmn9RNcKPTFiqQDIYiDzw0ezPgyCeTK25Xaasyhx5rI91qvZ8OV1yt272Jxxjmh7y8eI1n67e4cVB3DcsbeDrTJMWjkS6Fq93GRpC51Cbagi8qioQmNy+58O3F3y+fIWX7r9NKxv+ruzufrI9PkJPTqizDG0aGmuHwLvWgrnGb87AzrBGk6/VU0PbNPjeUWjH99STbv1+huMPEglDlhIDwQe0qqnrB/Z9P+jqLnCz6sl14De177LD7H1bGwAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;Websocket共享(單點)&quot;
+        title=&quot;&quot;
+        src=&quot;/static/16d6b8bb8891327558dce0bf89f94079/f058b/Websocket%E5%85%B1%E4%BA%AB_%E5%96%AE%E9%BB%9E.png&quot;
+        srcset=&quot;/static/16d6b8bb8891327558dce0bf89f94079/c26ae/Websocket%E5%85%B1%E4%BA%AB_%E5%96%AE%E9%BB%9E.png 158w,
+/static/16d6b8bb8891327558dce0bf89f94079/6bdcf/Websocket%E5%85%B1%E4%BA%AB_%E5%96%AE%E9%BB%9E.png 315w,
+/static/16d6b8bb8891327558dce0bf89f94079/f058b/Websocket%E5%85%B1%E4%BA%AB_%E5%96%AE%E9%BB%9E.png 630w,
+/static/16d6b8bb8891327558dce0bf89f94079/5205c/Websocket%E5%85%B1%E4%BA%AB_%E5%96%AE%E9%BB%9E.png 833w&quot;
+        sizes=&quot;(max-width: 630px) 100vw, 630px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h2&gt;結論&lt;/h2&gt;
+&lt;p&gt;除了這次分享的方式除外，我們還可以使用Redis、Database 都可以實現這種效果。當然這次的分享還是簡單了，但安迪我也不愛寫太長的文章，又臭又長，寫了也是挺累了。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[SpringBootTest 如何跳過 @Configuration]]></title><description><![CDATA[Introduction 最近在撰寫整合測試時，在思考有沒有辦法加快整合測試的速度，當然首當其衝的就是，當某些測試不需要 Redis、MQ 連線時，全部略過啟用，可是查了許多資料，安迪我真的找不到一個簡單的方式，接下來就讓我分享一下我是如何跳過 @Configuration…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/SpringBootTest 如何跳過 @Configuration/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/SpringBootTest 如何跳過 @Configuration/</guid><pubDate>Fri, 25 Aug 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;最近在撰寫整合測試時，在思考有沒有辦法加快整合測試的速度，當然首當其衝的就是，當某些測試不需要 Redis、MQ 連線時，全部略過啟用，可是查了許多資料，安迪我真的找不到一個簡單的方式，接下來就讓我分享一下我是如何跳過 @Configuration 的自動載入。&lt;/p&gt;
 &lt;h2&gt;Solution&lt;/h2&gt;
 &lt;p&gt;今天我們有一個 MyService 服務要進行測試，但在 SpringBootTest 的情況下，會自動載入相關 @Configuration，如果安迪不想讓 MQTT 在測試時也嘗試連線，我們應該如何使用。&lt;/p&gt;
