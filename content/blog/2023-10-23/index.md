@@ -77,7 +77,7 @@ public abstract class BeanUtils {
 拋開這些檢查不說，反射就是一個問題來源。
 
 ## 反射是不是很慢
-是，在 Java17 之前確實存在效能議題，但這個議題是可見的，詳細資訊可看此文章(![The performance implications of Java reflection](https://blogs.oracle.com/javamagazine/post/java-reflection-performance))。
+是，在 Java17 以前確實存在效能議題，但這個議題是可見的，詳細資訊可看此文章([The performance implications of Java reflection](https://blogs.oracle.com/javamagazine/post/java-reflection-performance))。
 
 由上述文章說明的反射議題，我們可以來測試看看，反射與直接進行Set還慢。
 
