@@ -1,6 +1,6 @@
 ---
 title: BeanUtils.copyProperties 為什麼慢
-date: "2023-09-05T00:00:00Z"
+date: "2023-10-23T00:00:00Z"
 tags: ['Loadbalance','Webscoket']
 ---
 
@@ -74,7 +74,7 @@ public abstract class BeanUtils {
 ```
 簡單的看看原始碼，網路上已經有很多大神的解析，我們應該只要稍微順過一下，首先我們會取得所有目標的屬性資料，之後進行迴圈並且使用反射對目標與來源進行數值的取得與設定。
 
-拋開這些檢查不說，反射就是一個問題來源，
+拋開這些檢查不說，反射就是一個問題來源。
 
 ## 反射是不是很慢
 是，在 Java17 之前確實存在效能議題，但這個議題是可見的，詳細資訊可看此文章(![The performance implications of Java reflection](https://blogs.oracle.com/javamagazine/post/java-reflection-performance))。
@@ -130,9 +130,11 @@ Call.directCall      avgt    5    0.364 ± 0.043  ns/op
 Call.reflectiveCall  avgt    5  104.245 ± 3.031  ns/op
 ```
 
-搭配上述的文章，我們可以合理的推斷，確實 BeanUtils.copyProperties 效能與反射使用有關，更何況途中又為了安全進行一些判斷運算，當然這僅是安迪我這次的測試結果，僅僅是使用反射來進行測試所得到的結論。
+搭配上述的文章，我們可以合理的推斷，確實 BeanUtils.copyProperties 效能與反射使用有關，可能有能會說 BeanUtils 也有進行緩存 Method，讓取得 Method 更加快速，我相信也確實有所幫助。
+
+反過來說，如果今天沒有這一層緩存，BeanUtils.copyProperties 大概會慢到烏龜跑贏兔子了，更何況大量資料，當然這次僅僅是安迪透過原始碼以及網路上文章進行的一個測試所得到的結論。
 
 ## 結論
-所以安迪我又乖乖地切回到使用 MapStruct，果然效能又提升了上去，因為 MapStruct 並沒有使用反射而是透過方法來直接進行調用，速度也快上不少，當然 MapStruct 也是有一些雷需要踩，這邊就不加以贅述了。
+結論就是安迪我又乖乖地切回到使用 MapStruct，果然效能又提升了上去，因為 MapStruct 並沒有使用反射而是透過方法來直接進行調用，速度也快上不少，當然 MapStruct 也是有一些雷需要踩，這邊就不加以贅述了。
 
-此次就僅是安迪的一些心得與實驗，關於 BeanUtil.copyProperties 的效能議題，國外大大都有很深入的說明，大家有興趣可以自己爬來看看。
+安迪這次文章邊喝酒邊寫，人生就是這樣，頭暈也要搞些心得與實驗，關於 BeanUtil.copyProperties 的效能議題，國外大大都有很深入的說明，大家有興趣可以自己爬來看看。
